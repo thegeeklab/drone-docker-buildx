@@ -1,4 +1,4 @@
 /release/
-drone-docker-buildx*
+/drone-docker-buildx*
 
 coverage.out
