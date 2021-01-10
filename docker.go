@@ -93,7 +93,7 @@ func (p Plugin) Exec() error {
 		path := filepath.Join(dockerHome, "config.json")
 		err := ioutil.WriteFile(path, []byte(p.Login.Config), 0600)
 		if err != nil {
-			return fmt.Errorf("Error writing config.json: %s", err)
+			return fmt.Errorf("error writing config.json: %s", err)
 		}
 	}
 
@@ -102,7 +102,7 @@ func (p Plugin) Exec() error {
 		cmd := commandLogin(p.Login)
 		err := cmd.Run()
 		if err != nil {
-			return fmt.Errorf("Error authenticating: %s", err)
+			return fmt.Errorf("error authenticating: %s", err)
 		}
 	}
 
@@ -139,7 +139,7 @@ func (p Plugin) Exec() error {
 	for _, tag := range p.Build.Tags {
 		cmds = append(cmds, commandTag(p.Build, tag)) // docker tag
 
-		if p.Dryrun == false {
+		if !p.Dryrun {
 			cmds = append(cmds, commandPush(p.Build, tag)) // docker push
 		}
 	}

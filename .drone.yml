@@ -48,7 +48,7 @@ image_pull_secrets:
 
 trigger:
   ref:
-  - refs/heads/master
+  - refs/heads/main
   - refs/tags/**
   - refs/pull/**
 
@@ -105,7 +105,7 @@ image_pull_secrets:
 
 trigger:
   ref:
-  - refs/heads/master
+  - refs/heads/main
   - refs/tags/**
   - refs/pull/**
 
@@ -160,7 +160,7 @@ steps:
       from_secret: docker_username
   when:
     ref:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/**
   depends_on:
   - dryrun
@@ -181,7 +181,7 @@ steps:
       from_secret: quay_username
   when:
     ref:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/**
   depends_on:
   - dryrun
@@ -191,7 +191,7 @@ image_pull_secrets:
 
 trigger:
   ref:
-  - refs/heads/master
+  - refs/heads/main
   - refs/tags/**
   - refs/pull/**
 
@@ -246,7 +246,7 @@ steps:
       from_secret: docker_username
   when:
     ref:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/**
   depends_on:
   - dryrun
@@ -267,7 +267,7 @@ steps:
       from_secret: quay_username
   when:
     ref:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/**
   depends_on:
   - dryrun
@@ -277,7 +277,7 @@ image_pull_secrets:
 
 trigger:
   ref:
-  - refs/heads/master
+  - refs/heads/main
   - refs/tags/**
   - refs/pull/**
 
@@ -332,7 +332,7 @@ steps:
       from_secret: docker_username
   when:
     ref:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/**
   depends_on:
   - dryrun
@@ -353,7 +353,7 @@ steps:
       from_secret: quay_username
   when:
     ref:
-    - refs/heads/master
+    - refs/heads/main
     - refs/tags/**
   depends_on:
   - dryrun
@@ -363,7 +363,7 @@ image_pull_secrets:
 
 trigger:
   ref:
-  - refs/heads/master
+  - refs/heads/main
   - refs/tags/**
   - refs/pull/**
 
@@ -454,7 +454,7 @@ image_pull_secrets:
 
 trigger:
   ref:
-  - refs/heads/master
+  - refs/heads/main
   - refs/tags/**
   status:
   - success
@@ -468,6 +468,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 39198ae608d35d3f8b0a0a69ac66243cf31ccc4b0303b39a64b61ff738daa292
+hmac: 9ea1cc8a26d1c759eaf152bbc28abe6ec479310d6081bab4c27baefa5e2d4145
 
 ...
