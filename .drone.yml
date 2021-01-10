@@ -286,92 +286,6 @@ depends_on:
 
 ---
 kind: pipeline
-name: build-container-arm
-
-platform:
-  os: linux
-  arch: arm
-
-steps:
-- name: build
-  image: golang:1.15
-  commands:
-  - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
-  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/arm/drone-docker-buildx ./cmd/drone-docker-buildx
-
-- name: dryrun
-  image: plugins/docker:19
-  settings:
-    config:
-      from_secret: docker_config
-    dockerfile: docker/Dockerfile.arm
-    dry_run: true
-    password:
-      from_secret: docker_password
-    repo: thegeeklab/${DRONE_REPO_NAME}
-    username:
-      from_secret: docker_username
-  when:
-    ref:
-    - refs/pull/**
-  depends_on:
-  - build
-
-- name: publish-dockerhub
-  image: plugins/docker:19
-  settings:
-    auto_tag: true
-    auto_tag_suffix: arm
-    config:
-      from_secret: docker_config
-    dockerfile: docker/Dockerfile.arm
-    password:
-      from_secret: docker_password
-    repo: thegeeklab/${DRONE_REPO_NAME}
-    username:
-      from_secret: docker_username
-  when:
-    ref:
-    - refs/heads/main
-    - refs/tags/**
-  depends_on:
-  - dryrun
-
-- name: publish-quay
-  image: plugins/docker:19
-  settings:
-    auto_tag: true
-    auto_tag_suffix: arm
-    config:
-      from_secret: docker_config
-    dockerfile: docker/Dockerfile.arm
-    password:
-      from_secret: quay_password
-    registry: quay.io
-    repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
-    username:
-      from_secret: quay_username
-  when:
-    ref:
-    - refs/heads/main
-    - refs/tags/**
-  depends_on:
-  - dryrun
-
-image_pull_secrets:
-- docker_config
-
-trigger:
-  ref:
-  - refs/heads/main
-  - refs/tags/**
-  - refs/pull/**
-
-depends_on:
-- test
-
----
-kind: pipeline
 name: notifications
 
 platform:
@@ -468,6 +382,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 9ea1cc8a26d1c759eaf152bbc28abe6ec479310d6081bab4c27baefa5e2d4145
+hmac: 6d1863f57d2998859d188a5f9d6b063098a85204d79e0f818b4c758af05a8268
 
 ...
