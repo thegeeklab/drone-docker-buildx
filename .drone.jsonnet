@@ -319,6 +319,5 @@ local PipelineNotifications = {
   PipelineBuildBinaries,
   PipelineBuildContainer(arch='amd64'),
   PipelineBuildContainer(arch='arm64'),
-  PipelineBuildContainer(arch='arm'),
   PipelineNotifications,
 ]
