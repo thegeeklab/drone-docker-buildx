@@ -378,10 +378,9 @@ depends_on:
 - build-binaries
 - build-container-amd64
 - build-container-arm
-- build-container-arm64
 
 ---
 kind: signature
-hmac: 6d1863f57d2998859d188a5f9d6b063098a85204d79e0f818b4c758af05a8268
+hmac: b96d3b1606c0a1a97f535e051e8177deb58452e3fac73a5f3e695187ed5e7053
 
 ...

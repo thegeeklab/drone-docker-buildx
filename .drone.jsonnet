@@ -306,7 +306,6 @@ local PipelineNotifications = {
     'build-binaries',
     'build-container-amd64',
     'build-container-arm',
-    'build-container-arm64',
   ],
   trigger: {
     ref: ['refs/heads/main', 'refs/tags/**'],
