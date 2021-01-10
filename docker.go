@@ -39,24 +39,23 @@ type (
 
 	// Build defines Docker build parameters.
 	Build struct {
-		Remote      string   // Git remote URL
-		Name        string   // Docker build using default named tag
-		Dockerfile  string   // Docker build Dockerfile
-		Context     string   // Docker build context
-		Tags        []string // Docker build tags
-		Args        []string // Docker build args
-		ArgsEnv     []string // Docker build args from env
-		Target      string   // Docker build target
-		Squash      bool     // Docker build squash
-		Pull        bool     // Docker build pull
-		CacheFrom   []string // Docker build cache-from
-		Compress    bool     // Docker build compress
-		Repo        string   // Docker build repository
-		LabelSchema []string // label-schema Label map
-		Labels      []string // Label map
-		NoCache     bool     // Docker build no-cache
-		AddHost     []string // Docker build add-host
-		Quiet       bool     // Docker build quiet
+		Remote     string   // Git remote URL
+		Name       string   // Docker build using default named tag
+		Dockerfile string   // Docker build Dockerfile
+		Context    string   // Docker build context
+		Tags       []string // Docker build tags
+		Platforms  []string // Docker build target platforms
+		Args       []string // Docker build args
+		ArgsEnv    []string // Docker build args from env
+		Target     string   // Docker build target
+		Squash     bool     // Docker build squash
+		Pull       bool     // Docker build pull
+		CacheFrom  []string // Docker build cache-from
+		Compress   bool     // Docker build compress
+		Repo       string   // Docker build repository
+		NoCache    bool     // Docker build no-cache
+		AddHost    []string // Docker build add-host
+		Quiet      bool     // Docker build quiet
 	}
 
 	// Plugin defines the Docker plugin parameters.
@@ -127,6 +126,8 @@ func (p Plugin) Exec() error {
 	var cmds []*exec.Cmd
 	cmds = append(cmds, commandVersion()) // docker version
 	cmds = append(cmds, commandInfo())    // docker info
+	cmds = append(cmds, commandBuilder())
+	cmds = append(cmds, commandBuildx())
 
 	// pre-pull cache images
 	for _, img := range p.Build.CacheFrom {
@@ -211,10 +212,20 @@ func commandInfo() *exec.Cmd {
 	return exec.Command(dockerExe, "info")
 }
 
+func commandBuilder() *exec.Cmd {
+	return exec.Command(dockerExe, "buildx", "create", "--use")
+}
+
+func commandBuildx() *exec.Cmd {
+	return exec.Command(dockerExe, "buildx", "ls")
+}
+
 // helper function to create the docker build command.
 func commandBuild(build Build) *exec.Cmd {
 	args := []string{
+		"buildx",
 		"build",
+		"--load",
 		"--rm=true",
 		"-f", build.Dockerfile,
 		"-t", build.Name,
@@ -252,25 +263,8 @@ func commandBuild(build Build) *exec.Cmd {
 		args = append(args, "--quiet")
 	}
 
-	labelSchema := []string{
-		"schema-version=1.0",
-		fmt.Sprintf("build-date=%s", time.Now().Format(time.RFC3339)),
-		fmt.Sprintf("vcs-ref=%s", build.Name),
-		fmt.Sprintf("vcs-url=%s", build.Remote),
-	}
-
-	if len(build.LabelSchema) > 0 {
-		labelSchema = append(labelSchema, build.LabelSchema...)
-	}
-
-	for _, label := range labelSchema {
-		args = append(args, "--label", fmt.Sprintf("org.label-schema.%s", label))
-	}
-
-	if len(build.Labels) > 0 {
-		for _, label := range build.Labels {
-			args = append(args, "--label", label)
-		}
+	if len(build.Platforms) > 0 {
+		args = append(args, "--platform", strings.Join(build.Platforms[:], ","))
 	}
 
 	return exec.Command(dockerExe, args...)

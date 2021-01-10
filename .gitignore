@@ -1,3 +1,4 @@
-release
+/release/
+drone-docker-buildx*
+
 coverage.out
-vendor

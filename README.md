@@ -1,74 +1,56 @@
-# drone-docker
+# drone-docker-buildx
 
-[![Build Status](http://cloud.drone.io/api/badges/drone-plugins/drone-docker/status.svg)](http://cloud.drone.io/drone-plugins/drone-docker)
-[![Gitter chat](https://badges.gitter.im/drone/drone.png)](https://gitter.im/drone/drone)
-[![Join the discussion at https://discourse.drone.io](https://img.shields.io/badge/discourse-forum-orange.svg)](https://discourse.drone.io)
-[![Drone questions at https://stackoverflow.com](https://img.shields.io/badge/drone-stackoverflow-orange.svg)](https://stackoverflow.com/questions/tagged/drone.io)
-[![](https://images.microbadger.com/badges/image/plugins/docker.svg)](https://microbadger.com/images/plugins/docker "Get your own image badge on microbadger.com")
-[![Go Doc](https://godoc.org/github.com/drone-plugins/drone-docker?status.svg)](http://godoc.org/github.com/drone-plugins/drone-docker)
-[![Go Report](https://goreportcard.com/badge/github.com/drone-plugins/drone-docker)](https://goreportcard.com/report/github.com/drone-plugins/drone-docker)
+Drone plugin to build multiarch Docker images with buildx
 
-Drone plugin uses Docker-in-Docker to build and publish Docker images to a container registry. For the usage information and a listing of the available options please take a look at [the docs](http://plugins.drone.io/drone-plugins/drone-docker/).
+[![Build Status](https://img.shields.io/drone/build/thegeeklab/drone-docker-buildx?logo=drone)](https://cloud.drone.io/thegeeklab/drone-docker-buildx)
+[![Docker Hub](https://img.shields.io/badge/dockerhub-latest-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/thegeeklab/drone-docker-buildx)
+[![Quay.io](https://img.shields.io/badge/quay-latest-blue.svg?logo=docker&logoColor=white)](https://quay.io/repository/thegeeklab/drone-docker-buildx)
+[![Go Report Card](https://goreportcard.com/badge/github.com/thegeeklab/drone-docker-buildx)](https://goreportcard.com/report/github.com/thegeeklab/drone-docker-buildx)
+[![GitHub contributors](https://img.shields.io/github/contributors/thegeeklab/drone-docker-buildx)](https://github.com/thegeeklab/drone-docker-buildx/graphs/contributors)
+[![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/drone-docker-buildx)
+[![License: MIT](https://img.shields.io/github/license/thegeeklab/drone-docker-buildx)](https://github.com/thegeeklab/drone-docker-buildx/blob/main/LICENSE)
+
+Drone plugin to build multiarch Docker images with buildx.
 
 ## Build
 
-Build the binaries with the following commands:
+Build the binary with the following command:
 
-```console
+```Shell
 export GOOS=linux
 export GOARCH=amd64
 export CGO_ENABLED=0
 export GO111MODULE=on
 
-go build -v -a -tags netgo -o release/linux/amd64/drone-docker ./cmd/drone-docker
-go build -v -a -tags netgo -o release/linux/amd64/drone-gcr ./cmd/drone-gcr
-go build -v -a -tags netgo -o release/linux/amd64/drone-ecr ./cmd/drone-ecr
-go build -v -a -tags netgo -o release/linux/amd64/drone-acr ./cmd/drone-acr
-go build -v -a -tags netgo -o release/linux/amd64/drone-heroku ./cmd/drone-heroku
+go build -v -a -tags netgo -o release/drone-docker-buildx
 ```
 
-## Docker
+Build the Docker image with the following command:
 
-Build the Docker images with the following commands:
-
-```console
-docker build \
-  --label org.label-schema.build-date=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --label org.label-schema.vcs-ref=$(git rev-parse --short HEAD) \
-  --file docker/docker/Dockerfile.linux.amd64 --tag plugins/docker .
-
-docker build \
-  --label org.label-schema.build-date=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --label org.label-schema.vcs-ref=$(git rev-parse --short HEAD) \
-  --file docker/gcr/Dockerfile.linux.amd64 --tag plugins/gcr .
-
-docker build \
-  --label org.label-schema.build-date=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --label org.label-schema.vcs-ref=$(git rev-parse --short HEAD) \
-  --file docker/ecr/Dockerfile.linux.amd64 --tag plugins/ecr .
-
-docker build \
-  --label org.label-schema.build-date=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --label org.label-schema.vcs-ref=$(git rev-parse --short HEAD) \
-  --file docker/acr/Dockerfile.linux.amd64 --tag plugins/acr .
-
-docker build \
-  --label org.label-schema.build-date=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --label org.label-schema.vcs-ref=$(git rev-parse --short HEAD) \
-  --file docker/heroku/Dockerfile.linux.amd64 --tag plugins/heroku .
+```Shell
+docker build --file docker/Dockerfile.amd64 --tag thegeeklab/drone-docker-buildx .
 ```
 
 ## Usage
 
-> Notice: Be aware that the Docker plugin currently requires privileged capabilities, otherwise the integrated Docker daemon is not able to start.
+> Notice: Be aware that the tis plugin requires privileged capabilities, otherwise the integrated Docker daemon is not able to start.
 
 ```console
 docker run --rm \
   -e PLUGIN_TAG=latest \
   -e PLUGIN_REPO=octocat/hello-world \
-  -e DRONE_COMMIT_SHA=d8dbe4d94f15fe89232e0402c6e8a0ddf21af3ab \
+  -e DRONE_COMMIT_SHA=00000000 \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   --privileged \
-  plugins/docker --dry-run
+  thegeeklab/drone-docker-buildx --dry-run
 ```
+
+## Contributors
+
+Special thanks goes to all [contributors](https://github.com/thegeeklab/drone-docker-buildx/graphs/contributors). If you would like to contribute,
+please see the [instructions](https://github.com/thegeeklab/drone-docker-buildx/blob/main/CONTRIBUTING.md).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/thegeeklab/drone-docker-buildx/blob/main/LICENSE) file for details.
