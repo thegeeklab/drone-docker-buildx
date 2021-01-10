@@ -377,10 +377,10 @@ trigger:
 depends_on:
 - build-binaries
 - build-container-amd64
-- build-container-arm
+- build-container-arm64
 
 ---
 kind: signature
-hmac: b96d3b1606c0a1a97f535e051e8177deb58452e3fac73a5f3e695187ed5e7053
+hmac: 5e6192104654e4d8a0eec27f2a39836ca303a7909fda72bc75d236106501231d
 
 ...
