@@ -21,19 +21,6 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 			Destination: &settings.Build.Remote,
 		},
 		&cli.StringFlag{
-			Name:        "commit.sha",
-			Usage:       "git commit sha",
-			EnvVars:     []string{"DRONE_COMMIT_SHA"},
-			Value:       "00000000",
-			Destination: &settings.Build.Name,
-		},
-		&cli.StringFlag{
-			Name:        "commit.ref",
-			Usage:       "git commit ref",
-			EnvVars:     []string{"DRONE_COMMIT_REF"},
-			Destination: &settings.Build.Ref,
-		},
-		&cli.StringFlag{
 			Name:        "daemon.mirror",
 			Usage:       "docker daemon registry mirror",
 			EnvVars:     []string{"PLUGIN_MIRROR", "DOCKER_PLUGIN_MIRROR"},
@@ -232,12 +219,6 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_PURGE"},
 			Value:       true,
 			Destination: &settings.Cleanup,
-		},
-		&cli.StringFlag{
-			Name:        "repo.branch",
-			Usage:       "repository default branch",
-			EnvVars:     []string{"DRONE_REPO_BRANCH"},
-			Destination: &settings.Build.Branch,
 		},
 		&cli.BoolFlag{
 			Name:        "no-cache",
