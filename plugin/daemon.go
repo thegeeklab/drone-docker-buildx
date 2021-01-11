@@ -1,6 +1,4 @@
-// +build !windows
-
-package docker
+package plugin
 
 import (
 	"io/ioutil"
@@ -12,8 +10,8 @@ const dockerdExe = "/usr/local/bin/dockerd"
 const dockerHome = "/root/.docker/"
 
 func (p Plugin) startDaemon() {
-	cmd := commandDaemon(p.Daemon)
-	if p.Daemon.Debug {
+	cmd := commandDaemon(p.settings.Daemon)
+	if p.settings.Daemon.Debug {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 	} else {

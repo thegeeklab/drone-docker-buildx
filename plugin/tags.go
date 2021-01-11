@@ -1,4 +1,4 @@
-package docker
+package plugin
 
 import (
 	"fmt"
