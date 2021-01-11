@@ -121,10 +121,8 @@ func addProxyValue(build *Build, key string) {
 	value := getProxyValue(key)
 
 	if len(value) > 0 && !hasProxyBuildArg(build, key) {
-		args := build.Args.Value()
-		args = append(build.Args.Value(), fmt.Sprintf("%s=%s", key, value))
-		args = append(build.Args.Value(), fmt.Sprintf("%s=%s", strings.ToUpper(key), value))
-		build.Args = *cli.NewStringSlice(args...)
+		build.Args = *cli.NewStringSlice(append(build.Args.Value(), fmt.Sprintf("%s=%s", key, value))...)
+		build.Args = *cli.NewStringSlice(append(build.Args.Value(), fmt.Sprintf("%s=%s", strings.ToUpper(key), value))...)
 	}
 }
 
