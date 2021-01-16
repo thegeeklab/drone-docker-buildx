@@ -286,25 +286,25 @@ depends_on:
 
 ---
 kind: pipeline
-name: build-container-arm32
+name: build-container-arm
 
 platform:
   os: linux
-  arch: arm32
+  arch: arm
 
 steps:
 - name: build
   image: golang:1.15
   commands:
   - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
-  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/arm32/drone-docker-buildx ./cmd/drone-docker-buildx
+  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/arm/drone-docker-buildx ./cmd/drone-docker-buildx
 
 - name: dryrun
   image: plugins/docker:19
   settings:
     config:
       from_secret: docker_config
-    dockerfile: docker/Dockerfile.arm32
+    dockerfile: docker/Dockerfile.arm
     dry_run: true
     password:
       from_secret: docker_password
@@ -321,10 +321,10 @@ steps:
   image: plugins/docker:19
   settings:
     auto_tag: true
-    auto_tag_suffix: arm32
+    auto_tag_suffix: arm
     config:
       from_secret: docker_config
-    dockerfile: docker/Dockerfile.arm32
+    dockerfile: docker/Dockerfile.arm
     password:
       from_secret: docker_password
     repo: thegeeklab/${DRONE_REPO_NAME}
@@ -341,10 +341,10 @@ steps:
   image: plugins/docker:19
   settings:
     auto_tag: true
-    auto_tag_suffix: arm32
+    auto_tag_suffix: arm
     config:
       from_secret: docker_config
-    dockerfile: docker/Dockerfile.arm32
+    dockerfile: docker/Dockerfile.arm
     password:
       from_secret: quay_password
     registry: quay.io
@@ -464,10 +464,10 @@ depends_on:
 - build-binaries
 - build-container-amd64
 - build-container-arm64
-- build-container-arm32
+- build-container-arm
 
 ---
 kind: signature
-hmac: b37b207f06dbdefc004f152012da423ae9312aa0e617d4ecb37556bc7e4cb751
+hmac: cfe8c21cadc3fd45a3abd914a3767e2d5025ee9836791f71d4f620de1f9461ab
 
 ...
