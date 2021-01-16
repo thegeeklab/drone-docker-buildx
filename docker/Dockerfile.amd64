@@ -1,4 +1,4 @@
-FROM amd64/docker:20.10-dind@sha256:12521ff42db0d1e1d99f89c7dea6aa6e2d028c20cb42dad8285503735ddf678d
+FROM amd64/docker:19.03-dind
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
 LABEL org.opencontainers.image.authors="Robert Kaussow <mail@thegeeklab.de>"
@@ -16,6 +16,8 @@ ENV DOCKER_HOST=unix:///var/run/docker.sock
 RUN apk --update add --virtual .build-deps curl && \
     mkdir -p /usr/lib/docker/cli-plugins/ && \
     curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64" && \
+    curl -SsL -o /var/lib/docker/default.json https://github.com/moby/moby/blob/19.03/profiles/seccomp/default.json && \
+    chmod 600 /var/lib/docker/default.json && \
     chmod 755 /usr/lib/docker/cli-plugins/docker-buildx && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* && \

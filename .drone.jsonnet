@@ -306,6 +306,7 @@ local PipelineNotifications = {
     'build-binaries',
     'build-container-amd64',
     'build-container-arm64',
+    'build-container-arm32',
   ],
   trigger: {
     ref: ['refs/heads/main', 'refs/tags/**'],
@@ -318,5 +319,6 @@ local PipelineNotifications = {
   PipelineBuildBinaries,
   PipelineBuildContainer(arch='amd64'),
   PipelineBuildContainer(arch='arm64'),
+  PipelineBuildContainer(arch='arm32'),
   PipelineNotifications,
 ]

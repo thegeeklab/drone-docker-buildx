@@ -16,6 +16,8 @@ ENV DOCKER_HOST=unix:///var/run/docker.sock
 RUN apk --update add --virtual .build-deps curl && \
     mkdir -p /usr/lib/docker/cli-plugins/ && \
     curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64" && \
+    curl -SsL -o /var/lib/docker/default.json https://github.com/moby/moby/blob/19.03/profiles/seccomp/default.json && \
+    chmod 600 /var/lib/docker/default.json && \
     chmod 755 /usr/lib/docker/cli-plugins/docker-buildx && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* && \
