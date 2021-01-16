@@ -174,6 +174,7 @@ func commandDaemon(daemon Daemon) *exec.Cmd {
 	args := []string{
 		"--data-root", daemon.StoragePath,
 		"--host=unix:///var/run/docker.sock",
+		"--seccomp-profile=/var/lib/docker/default.json",
 	}
 
 	if daemon.StorageDriver != "" {
