@@ -12,6 +12,10 @@ Drone plugin to build multiarch Docker images with buildx
 
 Drone plugin to build multiarch Docker images with buildx.
 
+## Docker Tags
+
+Tags are following the main Docker version e.g. `20.10`, the second part is reflecting the plugin "version". A full example would be `20.10.5`.
+
 ## Build
 
 Build the binary with the following command:
