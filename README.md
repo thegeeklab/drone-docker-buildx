@@ -2,7 +2,7 @@
 
 Drone plugin to build multiarch Docker images with buildx
 
-[![Build Status](https://img.shields.io/drone/build/thegeeklab/drone-docker-buildx?logo=drone)](https://cloud.drone.io/thegeeklab/drone-docker-buildx)
+[![Build Status](https://img.shields.io/drone/build/thegeeklab/drone-docker-buildx?logo=drone)](https://drone.thegeeklab.de/thegeeklab/drone-docker-buildx)
 [![Docker Hub](https://img.shields.io/badge/dockerhub-latest-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/thegeeklab/drone-docker-buildx)
 [![Quay.io](https://img.shields.io/badge/quay-latest-blue.svg?logo=docker&logoColor=white)](https://quay.io/repository/thegeeklab/drone-docker-buildx)
 [![Go Report Card](https://goreportcard.com/badge/github.com/thegeeklab/drone-docker-buildx)](https://goreportcard.com/report/github.com/thegeeklab/drone-docker-buildx)
