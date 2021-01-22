@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/urfave/cli/v2"
 )
@@ -105,6 +106,9 @@ func commandBuild(build Build) *exec.Cmd {
 	if len(build.Platforms.Value()) > 0 {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))
 	}
+
+	// append generated build args
+	args = append(args, "--build-arg", "DOCKER_IMAGE_CREATED=%s", time.Now().Format(time.RFC3339))
 
 	return exec.Command(dockerExe, args...)
 }
