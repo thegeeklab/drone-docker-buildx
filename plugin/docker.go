@@ -108,7 +108,7 @@ func commandBuild(build Build) *exec.Cmd {
 	}
 
 	// append generated build args
-	args = append(args, "--build-arg", "DOCKER_IMAGE_CREATED=%s", time.Now().Format(time.RFC3339))
+	args = append(args, "--build-arg", fmt.Sprintf("DOCKER_IMAGE_CREATED=%s", time.Now().Format(time.RFC3339)))
 
 	return exec.Command(dockerExe, args...)
 }
