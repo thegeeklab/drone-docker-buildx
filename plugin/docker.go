@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 
 	"github.com/urfave/cli/v2"
 )
@@ -107,11 +106,7 @@ func commandBuild(build Build) *exec.Cmd {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))
 	}
 
-	cmd := exec.Command(dockerExe, args...)
-	copy(os.Environ(), cmd.Env)
-	cmd.Env = append(cmd.Env, fmt.Sprintf("DRONE_DOCKER_BUILD_TIME=%s", time.Now().Format(time.RFC3339)))
-
-	return cmd
+	return exec.Command(dockerExe, args...)
 }
 
 // helper function to add proxy values from the environment
