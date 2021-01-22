@@ -1,8 +1,11 @@
 # Changelog
 
-## v20.10.1 (2021-01-17)
+## v20.10.2 (2021-01-22)
+
+### New Features
+
+- set DOCKER_IMAGE_CREATED as build-arg
 
 ### Others
 
-- **devel**: refactor code to refelct plugins boilerplate
-- **deps**: pin docker digests
+- **deps**: update dependencies
