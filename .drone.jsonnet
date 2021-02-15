@@ -89,7 +89,7 @@ local PipelineBuildBinaries = {
         'mkdir -p release/',
         "cd cmd/drone-docker-buildx && xgo -ldflags \"-s -w -X main.version=$BUILD_VERSION\" -tags netgo -targets 'linux/amd64,linux/arm-6,linux/arm-7,linux/arm64' -out drone-docker-buildx .",
         'mv /build/* /drone/src/release/',
-        'ls -l /drone/src/release/'
+        'ls -l /drone/src/release/',
       ],
     },
     {
