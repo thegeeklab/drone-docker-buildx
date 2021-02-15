@@ -11,11 +11,12 @@ ARG BUILDX_VERSION
 
 # renovate: datasource=github-releases depName=docker/buildx
 ENV BUILDX_VERSION="${BUILDX_VERSION:-v0.5.1}"
+
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 
 RUN apk --update add --virtual .build-deps curl && \
     mkdir -p /usr/lib/docker/cli-plugins/ && \
-    curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64" && \
+    curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION##v}/buildx-v${BUILDX_VERSION##v}.linux-amd64" && \
     chmod 755 /usr/lib/docker/cli-plugins/docker-buildx && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* && \
