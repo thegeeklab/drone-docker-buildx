@@ -52,8 +52,12 @@ func commandInfo() *exec.Cmd {
 	return exec.Command(dockerExe, "info")
 }
 
-func commandBuilder() *exec.Cmd {
-	return exec.Command(dockerExe, "buildx", "create", "--use")
+func commandBuilder(path string) *exec.Cmd {
+	args := []string{"buildx", "create", "--use"}
+	if path != "" {
+		args = append(args, "--config", path)
+	}
+	return exec.Command(dockerExe, args...)
 }
 
 func commandBuildx() *exec.Cmd {

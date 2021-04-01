@@ -162,10 +162,33 @@ func (p *Plugin) Execute() error {
 	// add proxy build args
 	addProxyBuildArgs(&p.settings.Build)
 
+	// prepare insecure registry
+	var buildxConfigPath string
+	if p.settings.Daemon.Insecure && p.settings.Daemon.Registry != "" {
+		data := fmt.Sprintf(`
+	[registry."%s"]
+		http = true
+		insecure = true
+		`, p.settings.Daemon.Registry)
+		f, err := ioutil.TempFile("/tmp", "buildx-config-*")
+		if err != nil {
+			return fmt.Errorf("open temp file failed, %s", err)
+		}
+		_, err = f.Write([]byte(data))
+		if err != nil {
+			return fmt.Errorf("write temp file failed, %s", err)
+		}
+		err = f.Close()
+		if err != nil {
+			return fmt.Errorf("close temp file failed, %s", err)
+		}
+		buildxConfigPath = f.Name()
+	}
+
 	var cmds []*exec.Cmd
 	cmds = append(cmds, commandVersion()) // docker version
 	cmds = append(cmds, commandInfo())    // docker info
-	cmds = append(cmds, commandBuilder())
+	cmds = append(cmds, commandBuilder(buildxConfigPath))
 	cmds = append(cmds, commandBuildx())
 
 	// pre-pull cache images
