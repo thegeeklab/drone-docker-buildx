@@ -65,7 +65,6 @@ func commandBuild(build Build) *exec.Cmd {
 	args := []string{
 		"buildx",
 		"build",
-		"--load",
 		"--rm=true",
 		"-f", build.Dockerfile,
 		"-t", build.Name,
@@ -107,8 +106,14 @@ func commandBuild(build Build) *exec.Cmd {
 		args = append(args, "--quiet")
 	}
 
-	if len(build.Platforms.Value()) > 0 {
+	archs := len(build.Platforms.Value())
+	if archs > 0 {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))
+		if archs == 1 {
+			args = append(args, "--load")
+		} else {
+			args = append(args, "--push")
+		}
 	}
 
 	return exec.Command(dockerExe, args...)
