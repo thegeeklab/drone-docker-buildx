@@ -1,4 +1,4 @@
-FROM amd64/docker:20.10-dind@sha256:95a8e1aaf652c8b2c129495964eee8a3b95ed681f3cd85505b4c82f3508b0561
+FROM amd64/docker:20.10-dind@sha256:1cc47b5b89bdf63215e883cdba8b498605e8825ff98ac38ee0825bb060bab045
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
 LABEL org.opencontainers.image.authors="Robert Kaussow <mail@thegeeklab.de>"
