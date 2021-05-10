@@ -8,7 +8,7 @@ platform:
 
 steps:
 - name: staticcheck
-  image: golang:1.15
+  image: golang:1.16
   commands:
   - go run honnef.co/go/tools/cmd/staticcheck ./...
   volumes:
@@ -16,7 +16,7 @@ steps:
     path: /go
 
 - name: lint
-  image: golang:1.15
+  image: golang:1.16
   commands:
   - go run golang.org/x/lint/golint -set_exit_status ./...
   volumes:
@@ -24,7 +24,7 @@ steps:
     path: /go
 
 - name: vet
-  image: golang:1.15
+  image: golang:1.16
   commands:
   - go vet ./...
   volumes:
@@ -32,7 +32,7 @@ steps:
     path: /go
 
 - name: test
-  image: golang:1.15
+  image: golang:1.16
   commands:
   - go test -cover ./...
   volumes:
@@ -62,7 +62,7 @@ platform:
 
 steps:
 - name: build
-  image: techknowlogick/xgo:go-1.15.x
+  image: techknowlogick/xgo:go-1.16.x
   commands:
   - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
   - mkdir -p release/
@@ -135,7 +135,7 @@ platform:
 
 steps:
 - name: build
-  image: golang:1.15
+  image: golang:1.16
   commands:
   - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
   - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/amd64/drone-docker-buildx ./cmd/drone-docker-buildx
@@ -221,7 +221,7 @@ platform:
 
 steps:
 - name: build
-  image: golang:1.15
+  image: golang:1.16
   commands:
   - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
   - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/arm64/drone-docker-buildx ./cmd/drone-docker-buildx
@@ -394,6 +394,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 450e524b8b60cf174405bbe7c26be014671ae1a928157be53706232ace778e14
+hmac: d9ed315db5e0514b6151de65d4281802fad0882c5f71feff2f27a5686a794356
 
 ...
