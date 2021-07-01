@@ -197,15 +197,6 @@ func commandDaemon(daemon Daemon) *exec.Cmd {
 	return exec.Command(dockerdExe, args...)
 }
 
-// helper to check if args match "docker prune"
-func isCommandPrune(args []string) bool {
-	return len(args) > 3 && args[2] == "prune"
-}
-
-func commandPrune() *exec.Cmd {
-	return exec.Command(dockerExe, "system", "prune", "-f")
-}
-
 // trace writes each command to stdout with the command wrapped in an xml
 // tag so that it can be extracted and displayed in the logs.
 func trace(cmd *exec.Cmd) {

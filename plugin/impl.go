@@ -188,8 +188,6 @@ func (p *Plugin) Execute() error {
 		err := cmd.Run()
 		if err != nil && isCommandPull(cmd.Args) {
 			fmt.Printf("Could not pull cache-from image %s. Ignoring...\n", cmd.Args[2])
-		} else if err != nil && isCommandPrune(cmd.Args) {
-			fmt.Printf("Could not prune system containers. Ignoring...\n")
 		} else if err != nil {
 			return err
 		}
