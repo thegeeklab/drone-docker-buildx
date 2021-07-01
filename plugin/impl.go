@@ -179,11 +179,6 @@ func (p *Plugin) Execute() error {
 
 	cmds = append(cmds, commandBuild(p.settings.Build)) // docker build
 
-	// if p.settings.Cleanup {
-	// 	cmds = append(cmds, commandRmi(p.settings.Build.Name)) // docker rmi
-	// 	cmds = append(cmds, commandPrune())                    // docker system prune -f
-	// }
-
 	// execute all commands in batch mode.
 	for _, cmd := range cmds {
 		cmd.Stdout = os.Stdout
@@ -195,8 +190,6 @@ func (p *Plugin) Execute() error {
 			fmt.Printf("Could not pull cache-from image %s. Ignoring...\n", cmd.Args[2])
 		} else if err != nil && isCommandPrune(cmd.Args) {
 			fmt.Printf("Could not prune system containers. Ignoring...\n")
-		// } else if err != nil && isCommandRmi(cmd.Args) {
-		// 	fmt.Printf("Could not remove image %s. Ignoring...\n", cmd.Args[2])
 		} else if err != nil {
 			return err
 		}

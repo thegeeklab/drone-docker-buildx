@@ -206,15 +206,6 @@ func commandPrune() *exec.Cmd {
 	return exec.Command(dockerExe, "system", "prune", "-f")
 }
 
-// helper to check if args match "docker rmi"
-// func isCommandRmi(args []string) bool {
-// 	return len(args) > 2 && args[1] == "rmi"
-// }
-
-// func commandRmi(tag string) *exec.Cmd {
-// 	return exec.Command(dockerExe, "rmi", tag)
-// }
-
 // trace writes each command to stdout with the command wrapped in an xml
 // tag so that it can be extracted and displayed in the logs.
 func trace(cmd *exec.Cmd) {
