@@ -111,7 +111,7 @@ func commandBuild(build Build) *exec.Cmd {
 	}
 
 	for _, arg := range build.Tags.Value() {
-		args = append(args, "-t ", arg)
+		args = append(args, "-t", fmt.Sprintf("%s:%s", build.Repo, arg))
 	}	
 
 	return exec.Command(dockerExe, args...)
@@ -207,13 +207,13 @@ func commandPrune() *exec.Cmd {
 }
 
 // helper to check if args match "docker rmi"
-func isCommandRmi(args []string) bool {
-	return len(args) > 2 && args[1] == "rmi"
-}
+// func isCommandRmi(args []string) bool {
+// 	return len(args) > 2 && args[1] == "rmi"
+// }
 
-func commandRmi(tag string) *exec.Cmd {
-	return exec.Command(dockerExe, "rmi", tag)
-}
+// func commandRmi(tag string) *exec.Cmd {
+// 	return exec.Command(dockerExe, "rmi", tag)
+// }
 
 // trace writes each command to stdout with the command wrapped in an xml
 // tag so that it can be extracted and displayed in the logs.
