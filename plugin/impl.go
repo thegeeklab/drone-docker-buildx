@@ -179,14 +179,6 @@ func (p *Plugin) Execute() error {
 
 	cmds = append(cmds, commandBuild(p.settings.Build)) // docker build
 
-	for _, tag := range p.settings.Build.Tags.Value() {
-		cmds = append(cmds, commandTag(p.settings.Build, tag)) // docker tag
-
-		if !p.settings.Dryrun {
-			cmds = append(cmds, commandPush(p.settings.Build, tag)) // docker push
-		}
-	}
-
 	if p.settings.Cleanup {
 		cmds = append(cmds, commandRmi(p.settings.Build.Name)) // docker rmi
 		cmds = append(cmds, commandPrune())                    // docker system prune -f

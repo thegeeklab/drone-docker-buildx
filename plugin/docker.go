@@ -66,8 +66,8 @@ func commandBuild(build Build) *exec.Cmd {
 		"buildx",
 		"build",
 		"--rm=true",
+		"--push",
 		"-f", build.Dockerfile,
-		"-t", build.Name,
 	}
 
 	defaultBuildArgs := []string{
@@ -106,15 +106,13 @@ func commandBuild(build Build) *exec.Cmd {
 		args = append(args, "--quiet")
 	}
 
-	if len(build.Platforms.Value()) > 1 {
-		args = append(args, "--push")
-	} else {
-		args = append(args, "--load")
-	}
-
 	if len(build.Platforms.Value()) > 0 {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))
 	}
+
+	for _, arg := range build.Tags.Value() {
+		args = append(args, "-t ", arg)
+	}	
 
 	return exec.Command(dockerExe, args...)
 }
@@ -160,23 +158,6 @@ func hasProxyBuildArg(build *Build, key string) bool {
 	}
 
 	return false
-}
-
-// helper function to create the docker tag command.
-func commandTag(build Build, tag string) *exec.Cmd {
-	var (
-		source = build.Name
-		target = fmt.Sprintf("%s:%s", build.Repo, tag)
-	)
-	return exec.Command(
-		dockerExe, "tag", source, target,
-	)
-}
-
-// helper function to create the docker push command.
-func commandPush(build Build, tag string) *exec.Cmd {
-	target := fmt.Sprintf("%s:%s", build.Repo, tag)
-	return exec.Command(dockerExe, "push", target)
 }
 
 // helper function to create the docker daemon command.
