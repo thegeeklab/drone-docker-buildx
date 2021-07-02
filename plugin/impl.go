@@ -83,10 +83,6 @@ func (p *Plugin) Validate() error {
 	p.settings.Build.Ref = p.pipeline.Commit.Ref
 	p.settings.Daemon.Registry = p.settings.Login.Registry
 
-	if len(p.settings.Build.Platforms.Value()) > 1 && p.settings.Dryrun {
-		return fmt.Errorf("dryrun is not supported on multi-platform builds")
-	}
-
 	if p.settings.Build.TagsAuto {
 		// return true if tag event or default branch
 		if UseDefaultTag(
@@ -177,20 +173,7 @@ func (p *Plugin) Execute() error {
 		cmds = append(cmds, commandPull(img))
 	}
 
-	cmds = append(cmds, commandBuild(p.settings.Build)) // docker build
-
-	for _, tag := range p.settings.Build.Tags.Value() {
-		cmds = append(cmds, commandTag(p.settings.Build, tag)) // docker tag
-
-		if !p.settings.Dryrun {
-			cmds = append(cmds, commandPush(p.settings.Build, tag)) // docker push
-		}
-	}
-
-	if p.settings.Cleanup {
-		cmds = append(cmds, commandRmi(p.settings.Build.Name)) // docker rmi
-		cmds = append(cmds, commandPrune())                    // docker system prune -f
-	}
+	cmds = append(cmds, commandBuild(p.settings.Build, p.settings.Dryrun)) // docker build
 
 	// execute all commands in batch mode.
 	for _, cmd := range cmds {
@@ -201,10 +184,6 @@ func (p *Plugin) Execute() error {
 		err := cmd.Run()
 		if err != nil && isCommandPull(cmd.Args) {
 			fmt.Printf("Could not pull cache-from image %s. Ignoring...\n", cmd.Args[2])
-		} else if err != nil && isCommandPrune(cmd.Args) {
-			fmt.Printf("Could not prune system containers. Ignoring...\n")
-		} else if err != nil && isCommandRmi(cmd.Args) {
-			fmt.Printf("Could not remove image %s. Ignoring...\n", cmd.Args[2])
 		} else if err != nil {
 			return err
 		}

@@ -61,13 +61,12 @@ func commandBuildx() *exec.Cmd {
 }
 
 // helper function to create the docker build command.
-func commandBuild(build Build) *exec.Cmd {
+func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	args := []string{
 		"buildx",
 		"build",
 		"--rm=true",
 		"-f", build.Dockerfile,
-		"-t", build.Name,
 	}
 
 	defaultBuildArgs := []string{
@@ -75,6 +74,9 @@ func commandBuild(build Build) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
+	if ! dryrun {
+		args = append(args, "--push")
+	}
 	if build.Squash {
 		args = append(args, "--squash")
 	}
@@ -106,15 +108,13 @@ func commandBuild(build Build) *exec.Cmd {
 		args = append(args, "--quiet")
 	}
 
-	if len(build.Platforms.Value()) > 1 {
-		args = append(args, "--push")
-	} else {
-		args = append(args, "--load")
-	}
-
 	if len(build.Platforms.Value()) > 0 {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))
 	}
+
+	for _, arg := range build.Tags.Value() {
+		args = append(args, "-t", fmt.Sprintf("%s:%s", build.Repo, arg))
+	}	
 
 	return exec.Command(dockerExe, args...)
 }
@@ -162,23 +162,6 @@ func hasProxyBuildArg(build *Build, key string) bool {
 	return false
 }
 
-// helper function to create the docker tag command.
-func commandTag(build Build, tag string) *exec.Cmd {
-	var (
-		source = build.Name
-		target = fmt.Sprintf("%s:%s", build.Repo, tag)
-	)
-	return exec.Command(
-		dockerExe, "tag", source, target,
-	)
-}
-
-// helper function to create the docker push command.
-func commandPush(build Build, tag string) *exec.Cmd {
-	target := fmt.Sprintf("%s:%s", build.Repo, tag)
-	return exec.Command(dockerExe, "push", target)
-}
-
 // helper function to create the docker daemon command.
 func commandDaemon(daemon Daemon) *exec.Cmd {
 	args := []string{
@@ -214,24 +197,6 @@ func commandDaemon(daemon Daemon) *exec.Cmd {
 		args = append(args, "--experimental")
 	}
 	return exec.Command(dockerdExe, args...)
-}
-
-// helper to check if args match "docker prune"
-func isCommandPrune(args []string) bool {
-	return len(args) > 3 && args[2] == "prune"
-}
-
-func commandPrune() *exec.Cmd {
-	return exec.Command(dockerExe, "system", "prune", "-f")
-}
-
-// helper to check if args match "docker rmi"
-func isCommandRmi(args []string) bool {
-	return len(args) > 2 && args[1] == "rmi"
-}
-
-func commandRmi(tag string) *exec.Cmd {
-	return exec.Command(dockerExe, "rmi", tag)
 }
 
 // trace writes each command to stdout with the command wrapped in an xml
