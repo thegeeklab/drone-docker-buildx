@@ -61,7 +61,7 @@ func commandBuildx() *exec.Cmd {
 }
 
 // helper function to create the docker build command.
-func commandBuild(build Build) *exec.Cmd {
+func commandBuild(build Build, bool dryrun) *exec.Cmd {
 	args := []string{
 		"buildx",
 		"build",
@@ -74,7 +74,7 @@ func commandBuild(build Build) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
-	if ! settings.Dryrun {
+	if ! dryrun {
 		args = append(args, "--push")
 	}
 	if build.Squash {

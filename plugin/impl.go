@@ -173,7 +173,7 @@ func (p *Plugin) Execute() error {
 		cmds = append(cmds, commandPull(img))
 	}
 
-	cmds = append(cmds, commandBuild(p.settings.Build)) // docker build
+	cmds = append(cmds, commandBuild(p.settings.Build, p.settings.Dryrun)) // docker build
 
 	// execute all commands in batch mode.
 	for _, cmd := range cmds {
