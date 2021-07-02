@@ -74,7 +74,7 @@ func commandBuild(build Build) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
-	if ! build.Dryrun {
+	if ! Settings.Dryrun {
 		args = append(args, "--push")
 	}
 	if build.Squash {
