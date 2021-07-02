@@ -83,10 +83,6 @@ func (p *Plugin) Validate() error {
 	p.settings.Build.Ref = p.pipeline.Commit.Ref
 	p.settings.Daemon.Registry = p.settings.Login.Registry
 
-	if len(p.settings.Build.Platforms.Value()) > 1 && p.settings.Dryrun {
-		return fmt.Errorf("dryrun is not supported on multi-platform builds")
-	}
-
 	if p.settings.Build.TagsAuto {
 		// return true if tag event or default branch
 		if UseDefaultTag(

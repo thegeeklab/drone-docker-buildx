@@ -66,7 +66,6 @@ func commandBuild(build Build) *exec.Cmd {
 		"buildx",
 		"build",
 		"--rm=true",
-		"--push",
 		"-f", build.Dockerfile,
 	}
 
@@ -75,6 +74,9 @@ func commandBuild(build Build) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
+	if ! build.Dryrun {
+		args = append(args, "--push")
+	}
 	if build.Squash {
 		args = append(args, "--squash")
 	}
