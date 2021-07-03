@@ -41,7 +41,6 @@ type Login struct {
 // Build defines Docker build parameters.
 type Build struct {
 	Remote     string          // Git remote URL
-	Name       string          // Git commit sha used as docker default named tag
 	Ref        string          // Git commit ref
 	Branch     string          // Git repository branch
 	Dockerfile string          // Docker build Dockerfile
@@ -74,11 +73,6 @@ type Settings struct {
 
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
-	p.settings.Build.Name = "00000000"
-	if p.pipeline.Commit.SHA != "" {
-		p.settings.Build.Name = p.pipeline.Commit.SHA
-	}
-
 	p.settings.Build.Branch = p.pipeline.Repo.Branch
 	p.settings.Build.Ref = p.pipeline.Commit.Ref
 	p.settings.Daemon.Registry = p.settings.Login.Registry
