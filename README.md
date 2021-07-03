@@ -50,6 +50,16 @@ docker run --rm \
   thegeeklab/drone-docker-buildx --dry-run
 ```
 
+## Community
+
+<!-- prettier-ignore-start -->
+<!-- spellchecker-disable -->
+
+- [BitProcessor/drone-docker-buildx-ecr](https://github.com/BitProcessor/drone-docker-buildx-ecr) by [@BitProcessor](https://github.com/BitProcessor)
+
+<!-- spellchecker-enable -->
+<!-- prettier-ignore-end -->
+
 ## Contributors
 
 Special thanks goes to all [contributors](https://github.com/thegeeklab/drone-docker-buildx/graphs/contributors). If you would like to contribute,
