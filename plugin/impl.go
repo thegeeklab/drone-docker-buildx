@@ -27,6 +27,7 @@ type Daemon struct {
 	MTU           string          // Docker daemon mtu setting
 	IPv6          bool            // Docker daemon IPv6 networking
 	Experimental  bool            // Docker daemon enable experimental mode
+	Config        string          // Docker buildx config
 }
 
 // Login defines Docker login parameters.
