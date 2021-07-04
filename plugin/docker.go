@@ -56,7 +56,7 @@ func commandBuilder(daemon Daemon) *exec.Cmd {
 	args := []string{
 		"buildx", 
 		"create", 
-		"--use"
+		"--use",
 	}
 
 	if(daemon.Config != "") {

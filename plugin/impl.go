@@ -160,7 +160,7 @@ func (p *Plugin) Execute() error {
 	var cmds []*exec.Cmd
 	cmds = append(cmds, commandVersion()) // docker version
 	cmds = append(cmds, commandInfo())    // docker info
-	cmds = append(cmds, commandBuilder())
+	cmds = append(cmds, commandBuilder(p.settings.Daemon))
 	cmds = append(cmds, commandBuildx())
 
 	// pre-pull cache images
