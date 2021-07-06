@@ -96,8 +96,8 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "daemon.buildkit-config",
 			Usage:       "location of buildkit config file",
-			EnvVars:     []string{"PLUGIN_BUILDX_CONFIG", "PLUGIN_BUILDKIT_CONFIG"},
-			Destination: &settings.Daemon.Config,
+			EnvVars:     []string{"PLUGIN_BUILDKIT_CONFIG"},
+			Destination: &settings.Daemon.BuildxConfig,
 		},
 		&cli.StringFlag{
 			Name:        "dockerfile",
