@@ -14,20 +14,20 @@ import (
 
 // Daemon defines Docker daemon parameters.
 type Daemon struct {
-	Registry      string          // Docker registry
-	Mirror        string          // Docker registry mirror
-	Insecure      bool            // Docker daemon enable insecure registries
-	StorageDriver string          // Docker daemon storage driver
-	StoragePath   string          // Docker daemon storage path
-	Disabled      bool            // DOcker daemon is disabled (already running)
-	Debug         bool            // Docker daemon started in debug mode
-	Bip           string          // Docker daemon network bridge IP address
-	DNS           cli.StringSlice // Docker daemon dns server
-	DNSSearch     cli.StringSlice // Docker daemon dns search domain
-	MTU           string          // Docker daemon mtu setting
-	IPv6          bool            // Docker daemon IPv6 networking
-	Experimental  bool            // Docker daemon enable experimental mode
-	BuildxConfig  string          // Docker buildx config
+	Registry       string          // Docker registry
+	Mirror         string          // Docker registry mirror
+	Insecure       bool            // Docker daemon enable insecure registries
+	StorageDriver  string          // Docker daemon storage driver
+	StoragePath    string          // Docker daemon storage path
+	Disabled       bool            // DOcker daemon is disabled (already running)
+	Debug          bool            // Docker daemon started in debug mode
+	Bip            string          // Docker daemon network bridge IP address
+	DNS            cli.StringSlice // Docker daemon dns server
+	DNSSearch      cli.StringSlice // Docker daemon dns search domain
+	MTU            string          // Docker daemon mtu setting
+	IPv6           bool            // Docker daemon IPv6 networking
+	Experimental   bool            // Docker daemon enable experimental mode
+	BuildkitConfig string          // Docker buildkit config file
 }
 
 // Login defines Docker login parameters.
