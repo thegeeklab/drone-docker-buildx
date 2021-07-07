@@ -78,8 +78,8 @@ func (p *Plugin) Validate() error {
 	p.settings.Build.Ref = p.pipeline.Commit.Ref
 	p.settings.Daemon.Registry = p.settings.Login.Registry
 
-	if daemon.BuildkitConfig != "" {
-		if _, err := os.Stat(settings.Daemon.BuildkitConfig); err != nil && os.IsNotExist(err) {
+	if p.settings.Daemon.BuildkitConfig != "" {
+		if _, err := os.Stat(p.settings.Daemon.BuildkitConfig); err != nil && os.IsNotExist(err) {
 			return fmt.Errorf("given buildkit config file not found")
 		}
 	}
