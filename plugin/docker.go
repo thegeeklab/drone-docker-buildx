@@ -59,8 +59,8 @@ func commandBuilder(daemon Daemon) *exec.Cmd {
 		"--use",
 	}
 
-	if daemon.BuildxConfig != "" {
-		args = append(args, "--config", daemon.BuildxConfig)
+	if daemon.BuildkitConfig != "" {
+		args = append(args, "--config", daemon.BuildkitConfig)
 	}
 
 	return exec.Command(dockerExe, args...)
