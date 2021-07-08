@@ -52,8 +52,18 @@ func commandInfo() *exec.Cmd {
 	return exec.Command(dockerExe, "info")
 }
 
-func commandBuilder() *exec.Cmd {
-	return exec.Command(dockerExe, "buildx", "create", "--use")
+func commandBuilder(daemon Daemon) *exec.Cmd {
+	args := []string{
+		"buildx", 
+		"create", 
+		"--use",
+	}
+
+	if daemon.BuildkitConfig != "" {
+		args = append(args, "--config", daemon.BuildkitConfig)
+	}
+
+	return exec.Command(dockerExe, args...)
 }
 
 func commandBuildx() *exec.Cmd {
