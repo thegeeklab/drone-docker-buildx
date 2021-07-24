@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -27,7 +26,7 @@ type Daemon struct {
 	MTU            string          // Docker daemon mtu setting
 	IPv6           bool            // Docker daemon IPv6 networking
 	Experimental   bool            // Docker daemon enable experimental mode
-	BuildkitConfig string          // Docker buildkit config file
+	BuildkitConfig string          // Docker buildkit config
 }
 
 // Login defines Docker login parameters.
@@ -78,12 +77,6 @@ func (p *Plugin) Validate() error {
 	p.settings.Build.Ref = p.pipeline.Commit.Ref
 	p.settings.Daemon.Registry = p.settings.Login.Registry
 
-	if p.settings.Daemon.BuildkitConfig != "" {
-		if _, err := os.Stat(p.settings.Daemon.BuildkitConfig); err != nil && os.IsNotExist(err) {
-			return fmt.Errorf("given buildkit config file not found")
-		}
-	}
-
 	if p.settings.Build.TagsAuto {
 		// return true if tag event or default branch
 		if UseDefaultTag(
@@ -131,7 +124,7 @@ func (p *Plugin) Execute() error {
 		os.MkdirAll(dockerHome, 0600)
 
 		path := filepath.Join(dockerHome, "config.json")
-		err := ioutil.WriteFile(path, []byte(p.settings.Login.Config), 0600)
+		err := os.WriteFile(path, []byte(p.settings.Login.Config), 0600)
 		if err != nil {
 			return fmt.Errorf("error writing config.json: %s", err)
 		}
@@ -143,6 +136,13 @@ func (p *Plugin) Execute() error {
 		err := cmd.Run()
 		if err != nil {
 			return fmt.Errorf("error authenticating: %s", err)
+		}
+	}
+
+	if p.settings.Daemon.BuildkitConfig != "" {
+		err := os.WriteFile(buildkitConfig, []byte(p.settings.Daemon.BuildkitConfig), 0600)
+		if err != nil {
+			return fmt.Errorf("error writing buildkit.json: %s", err)
 		}
 	}
 
