@@ -1,13 +1,14 @@
 package plugin
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 )
 
 const dockerExe = "/usr/local/bin/docker"
 const dockerdExe = "/usr/local/bin/dockerd"
 const dockerHome = "/root/.docker/"
+const buildkitConfig = "/tmp/buildkit.json"
 
 func (p Plugin) startDaemon() {
 	cmd := commandDaemon(p.settings.Daemon)
@@ -15,8 +16,8 @@ func (p Plugin) startDaemon() {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 	} else {
-		cmd.Stdout = ioutil.Discard
-		cmd.Stderr = ioutil.Discard
+		cmd.Stdout = io.Discard
+		cmd.Stderr = io.Discard
 	}
 	go func() {
 		trace(cmd)

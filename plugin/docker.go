@@ -54,13 +54,13 @@ func commandInfo() *exec.Cmd {
 
 func commandBuilder(daemon Daemon) *exec.Cmd {
 	args := []string{
-		"buildx", 
-		"create", 
+		"buildx",
+		"create",
 		"--use",
 	}
 
 	if daemon.BuildkitConfig != "" {
-		args = append(args, "--config", daemon.BuildkitConfig)
+		args = append(args, "--config", buildkitConfig)
 	}
 
 	return exec.Command(dockerExe, args...)
@@ -84,7 +84,7 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
-	if ! dryrun {
+	if !dryrun {
 		args = append(args, "--push")
 	}
 	if build.Squash {
@@ -124,7 +124,7 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 
 	for _, arg := range build.Tags.Value() {
 		args = append(args, "-t", fmt.Sprintf("%s:%s", build.Repo, arg))
-	}	
+	}
 
 	return exec.Command(dockerExe, args...)
 }
