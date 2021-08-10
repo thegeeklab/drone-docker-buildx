@@ -52,6 +52,14 @@ func commandInfo() *exec.Cmd {
 	return exec.Command(dockerExe, "info")
 }
 
+func commandInstallBinfmt() *exec.Cmd {
+	return exec.Command(
+		dockerExe, "run",
+		"--privileged", "--rm",
+		"tonistiigi/binfmt", "--install all"
+	)
+}
+
 func commandBuilder(daemon Daemon) *exec.Cmd {
 	args := []string{
 		"buildx",

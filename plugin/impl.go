@@ -27,6 +27,7 @@ type Daemon struct {
 	IPv6           bool            // Docker daemon IPv6 networking
 	Experimental   bool            // Docker daemon enable experimental mode
 	BuildkitConfig string          // Docker buildkit config
+	InstallBinfmt  bool            // Install binfmt binaries for better emulation support
 }
 
 // Login defines Docker login parameters.
@@ -158,6 +159,11 @@ func (p *Plugin) Execute() error {
 	if p.settings.Build.Squash && !p.settings.Daemon.Experimental {
 		fmt.Println("Squash build flag is only available when Docker deamon is started with experimental flag. Ignoring...")
 		p.settings.Build.Squash = false
+	}
+
+	// run the binfmt docker image if requested
+	if p.settings.Daemon.InstallBinfmt {
+		commandInstallBinfmt()
 	}
 
 	// add proxy build args

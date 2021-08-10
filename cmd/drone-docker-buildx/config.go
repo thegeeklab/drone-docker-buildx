@@ -99,6 +99,12 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_BUILDKIT_CONFIG"},
 			Destination: &settings.Daemon.BuildkitConfig,
 		},
+		&cli.BoolFlag{
+			Name:        "daemon.install-binfmt",
+			Usage:       "run bimfmt binaries installer",
+			EnvVars:     []string{"PLUGIN_INSTALL_BINFMT"},
+			Destination: &settings.Daemon.InstallBinfmt,
+		},
 		&cli.StringFlag{
 			Name:        "dockerfile",
 			Usage:       "build dockerfile",
