@@ -55,8 +55,10 @@ func commandInfo() *exec.Cmd {
 func commandInstallBinfmt() *exec.Cmd {
 	return exec.Command(
 		dockerExe, "run",
-		"--privileged", "--rm",
-		"tonistiigi/binfmt", "--install all"
+		"--privileged",
+		"--rm",
+		"tonistiigi/binfmt",
+		"--install all",
 	)
 }
 
