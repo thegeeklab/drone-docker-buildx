@@ -52,7 +52,6 @@ type Build struct {
 	Args       cli.StringSlice // Docker build args
 	ArgsEnv    cli.StringSlice // Docker build args from env
 	Target     string          // Docker build target
-	Squash     bool            // Docker build squash
 	Pull       bool            // Docker build pull
 	CacheFrom  cli.StringSlice // Docker build cache-from
 	Compress   bool            // Docker build compress
@@ -153,11 +152,6 @@ func (p *Plugin) Execute() error {
 		fmt.Println("Detected registry credentials file")
 	default:
 		fmt.Println("Registry credentials or Docker config not provided. Guest mode enabled.")
-	}
-
-	if p.settings.Build.Squash && !p.settings.Daemon.Experimental {
-		fmt.Println("Squash build flag is only available when Docker deamon is started with experimental flag. Ignoring...")
-		p.settings.Build.Squash = false
 	}
 
 	// add proxy build args
