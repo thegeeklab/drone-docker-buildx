@@ -87,9 +87,6 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	if !dryrun {
 		args = append(args, "--push")
 	}
-	if build.Squash {
-		args = append(args, "--squash")
-	}
 	if build.Compress {
 		args = append(args, "--compress")
 	}

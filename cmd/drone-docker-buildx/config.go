@@ -164,12 +164,6 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 			Destination: &settings.Build.CacheFrom,
 		},
 		&cli.BoolFlag{
-			Name:        "squash",
-			Usage:       "squash the layers at build time",
-			EnvVars:     []string{"PLUGIN_SQUASH"},
-			Destination: &settings.Build.Squash,
-		},
-		&cli.BoolFlag{
 			Name:        "pull-image",
 			Usage:       "force pull base image at build time",
 			EnvVars:     []string{"PLUGIN_PULL_IMAGE"},
