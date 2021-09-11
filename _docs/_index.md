@@ -153,7 +153,7 @@ password
 : sets password to authenticates with
 
 email
-: sets email addres to authenticates with
+: sets email address to authenticates with
 
 config
 : sets content of the docker daemon json config

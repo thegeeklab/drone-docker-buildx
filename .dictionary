@@ -3,10 +3,15 @@ ip
 mtu
 dns
 ipv6
+buildkit
+json
+config
 dockerfile
 og
 gzip
 json
 config
 host:ip
+drone-docker-buildx
 multiarch
+buildx

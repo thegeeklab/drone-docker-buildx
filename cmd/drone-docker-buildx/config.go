@@ -204,7 +204,7 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "docker.email",
 			EnvVars:     []string{"PLUGIN_EMAIL", "DOCKER_EMAIL"},
-			Usage:       "sets email addres to authenticates with",
+			Usage:       "sets email address to authenticates with",
 			Destination: &settings.Login.Email,
 		},
 		&cli.StringFlag{
