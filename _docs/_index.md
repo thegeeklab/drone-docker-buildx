@@ -9,6 +9,8 @@ title: drone-docker-buildx
 [![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/drone-docker-buildx)
 [![License: MIT](https://img.shields.io/github/license/thegeeklab/drone-docker-buildx)](https://github.com/thegeeklab/drone-docker-buildx/blob/main/LICENSE)
 
+Drone plugin to build and publish multiarch Docker images with buildx.
+
 <!-- prettier-ignore-start -->
 <!-- spellchecker-disable -->
 {{< toc >}}
