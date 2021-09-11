@@ -1,6 +1,7 @@
 repository:
   name: drone-docker-buildx
   description: Drone plugin to build multiarch Docker images with buildx
+  homepage: https://drone-plugin-index.geekdocs.de/plugins/drone-docker-buildx
   topics: drone, drone-plugin
 
   private: false
@@ -53,3 +54,12 @@ branches:
           - continuous-integration/drone/pr
       enforce_admins: null
       restrictions: null
+  - name: docs
+    protection:
+      required_pull_request_reviews: null
+      required_status_checks: null
+      enforce_admins: true
+      restrictions:
+        users: []
+        teams:
+          - bot

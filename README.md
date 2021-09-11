@@ -10,45 +10,11 @@ Drone plugin to build multiarch Docker images with buildx
 [![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/drone-docker-buildx)
 [![License: MIT](https://img.shields.io/github/license/thegeeklab/drone-docker-buildx)](https://github.com/thegeeklab/drone-docker-buildx/blob/main/LICENSE)
 
-Drone plugin to build multiarch Docker images with buildx. This plugin is a fork of [drone-plugins/drone-docker](https://github.com/drone-plugins/drone-docker).
+Drone plugin to build multiarch Docker images with buildx. This plugin is a fork of [drone-plugins/drone-docker](https://github.com/drone-plugins/drone-docker). You can find the full documentation at You can find the full documentation at [https://drone-plugin-index.geekdocs.de](https://drone-plugin-index.geekdocs.de/plugins/drone-docker-buildx).
 
-## Docker Tags
+## Versioning
 
 Tags are following the main Docker version e.g. `20.10`, the second part is reflecting the plugin "version". A full example would be `20.10.5`.
-
-## Build
-
-Build the binary with the following command:
-
-```Shell
-export GOOS=linux
-export GOARCH=amd64
-export CGO_ENABLED=0
-export GO111MODULE=on
-
-go build -v -a -tags netgo -o release/drone-docker-buildx
-```
-
-Build the Docker image with the following command:
-
-```Shell
-docker build --file docker/Dockerfile.amd64 --tag thegeeklab/drone-docker-buildx .
-```
-
-## Usage
-
-> Notice: Be aware that the tis plugin requires privileged capabilities, otherwise the integrated Docker daemon is not able to start.
-
-```console
-docker run --rm \
-  -e PLUGIN_TAG=latest \
-  -e PLUGIN_REPO=octocat/hello-world \
-  -e DRONE_COMMIT_SHA=00000000 \
-  -v $(pwd):$(pwd) \
-  -w $(pwd) \
-  --privileged \
-  thegeeklab/drone-docker-buildx --dry-run
-```
 
 ## Community
 

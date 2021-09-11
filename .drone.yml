@@ -1,106 +1,96 @@
 ---
-kind: pipeline
-name: test
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: staticcheck
-  image: golang:1.16
-  commands:
-  - go run honnef.co/go/tools/cmd/staticcheck ./...
-  volumes:
-  - name: gopath
-    path: /go
-
-- name: lint
-  image: golang:1.16
-  commands:
-  - go run golang.org/x/lint/golint -set_exit_status ./...
-  volumes:
-  - name: gopath
-    path: /go
-
-- name: vet
-  image: golang:1.16
-  commands:
-  - go vet ./...
-  volumes:
-  - name: gopath
-    path: /go
-
-- name: test
-  image: golang:1.16
-  commands:
-  - go test -cover ./...
-  volumes:
-  - name: gopath
-    path: /go
-
-volumes:
-- name: gopath
-  temp: {}
-
 image_pull_secrets:
 - docker_config
-
+kind: pipeline
+name: test
+platform:
+  arch: amd64
+  os: linux
+steps:
+- commands:
+  - go run honnef.co/go/tools/cmd/staticcheck ./...
+  image: golang:1.16
+  name: staticcheck
+  volumes:
+  - name: gopath
+    path: /go
+- commands:
+  - go run golang.org/x/lint/golint -set_exit_status ./...
+  image: golang:1.16
+  name: lint
+  volumes:
+  - name: gopath
+    path: /go
+- commands:
+  - go vet ./...
+  image: golang:1.16
+  name: vet
+  volumes:
+  - name: gopath
+    path: /go
+- commands:
+  - go test -cover ./...
+  image: golang:1.16
+  name: test
+  volumes:
+  - name: gopath
+    path: /go
 trigger:
   ref:
   - refs/heads/main
   - refs/tags/**
   - refs/pull/**
-
+volumes:
+- name: gopath
+  temp: {}
 ---
+depends_on:
+- test
+image_pull_secrets:
+- docker_config
 kind: pipeline
 name: build-binaries
-
 platform:
-  os: linux
   arch: amd64
-
+  os: linux
 steps:
-- name: build
-  image: techknowlogick/xgo:go-1.16.x
-  commands:
-  - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
+- commands:
+  - '[ -z "${DRONE_TAG}" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}'
   - mkdir -p release/
-  - cd cmd/drone-docker-buildx && xgo -ldflags "-s -w -X main.version=$BUILD_VERSION" -tags netgo -targets 'linux/amd64,linux/arm-6,linux/arm-7,linux/arm64' -out drone-docker-buildx .
+  - cd cmd/drone-docker-buildx && xgo -ldflags "-s -w -X main.version=$BUILD_VERSION"
+    -tags netgo -targets 'linux/amd64,linux/arm-6,linux/arm-7,linux/arm64' -out drone-docker-buildx
+    .
   - mv /build/* /drone/src/release/
   - ls -l /drone/src/release/
-
-- name: executable
-  image: alpine
-  commands:
+  image: techknowlogick/xgo:go-1.16.x
+  name: build
+- commands:
   - $(find release/ -executable -type f | grep drone-docker-buildx-linux-amd64) --help
-
-- name: compress
   image: alpine
-  commands:
+  name: executable
+- commands:
   - apk add upx
   - find release/ -maxdepth 1 -executable -type f -exec upx {} \;
   - ls -lh release/
-
-- name: checksum
   image: alpine
-  commands:
+  name: compress
+- commands:
   - cd release/ && sha256sum * > sha256sum.txt
-
-- name: changelog-generate
-  image: thegeeklab/git-chglog
-  commands:
+  image: alpine
+  name: checksum
+- commands:
   - git fetch -tq
-  - git-chglog --no-color --no-emoji -o CHANGELOG.md ${DRONE_TAG:---next-tag unreleased unreleased}
-
-- name: changelog-format
-  image: thegeeklab/alpine-tools
-  commands:
+  - git-chglog --no-color --no-emoji -o CHANGELOG.md ${DRONE_TAG:---next-tag unreleased
+    unreleased}
+  image: thegeeklab/git-chglog
+  name: changelog-generate
+- commands:
   - prettier CHANGELOG.md
   - prettier -w CHANGELOG.md
-
-- name: publish
-  image: plugins/github-release
+  image: thegeeklab/alpine-tools
+  name: changelog-format
+- image: plugins/github-release
+  name: publish
   settings:
     api_key:
       from_secret: github_token
@@ -112,36 +102,32 @@ steps:
   when:
     ref:
     - refs/tags/**
-
-image_pull_secrets:
-- docker_config
-
 trigger:
   ref:
   - refs/heads/main
   - refs/tags/**
   - refs/pull/**
-
+---
 depends_on:
 - test
-
----
+image_pull_secrets:
+- docker_config
 kind: pipeline
 name: build-container-amd64
-
 platform:
-  os: linux
   arch: amd64
-
+  os: linux
 steps:
-- name: build
+- commands:
+  - '[ -z "${DRONE_TAG}" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}'
+  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/amd64/drone-docker-buildx
+    ./cmd/drone-docker-buildx
   image: golang:1.16
-  commands:
-  - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
-  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/amd64/drone-docker-buildx ./cmd/drone-docker-buildx
-
-- name: dryrun
+  name: build
+- depends_on:
+  - build
   image: plugins/docker:19
+  name: dryrun
   settings:
     config:
       from_secret: docker_config
@@ -155,11 +141,10 @@ steps:
   when:
     ref:
     - refs/pull/**
-  depends_on:
-  - build
-
-- name: publish-dockerhub
+- depends_on:
+  - dryrun
   image: plugins/docker:19
+  name: publish-dockerhub
   settings:
     auto_tag: true
     auto_tag_suffix: amd64
@@ -175,11 +160,10 @@ steps:
     ref:
     - refs/heads/main
     - refs/tags/**
-  depends_on:
+- depends_on:
   - dryrun
-
-- name: publish-quay
   image: plugins/docker:19
+  name: publish-quay
   settings:
     auto_tag: true
     auto_tag_suffix: amd64
@@ -196,38 +180,32 @@ steps:
     ref:
     - refs/heads/main
     - refs/tags/**
-  depends_on:
-  - dryrun
-
-image_pull_secrets:
-- docker_config
-
 trigger:
   ref:
   - refs/heads/main
   - refs/tags/**
   - refs/pull/**
-
+---
 depends_on:
 - test
-
----
+image_pull_secrets:
+- docker_config
 kind: pipeline
 name: build-container-arm64
-
 platform:
-  os: linux
   arch: arm64
-
+  os: linux
 steps:
-- name: build
+- commands:
+  - '[ -z "${DRONE_TAG}" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}'
+  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/arm64/drone-docker-buildx
+    ./cmd/drone-docker-buildx
   image: golang:1.16
-  commands:
-  - "[ -z \"${DRONE_TAG}\" ] && BUILD_VERSION=${DRONE_COMMIT_SHA:0:8} || BUILD_VERSION=${DRONE_TAG##v}"
-  - go build -v -ldflags "-X main.version=$BUILD_VERSION" -a -tags netgo -o release/arm64/drone-docker-buildx ./cmd/drone-docker-buildx
-
-- name: dryrun
+  name: build
+- depends_on:
+  - build
   image: plugins/docker:19
+  name: dryrun
   settings:
     config:
       from_secret: docker_config
@@ -241,11 +219,10 @@ steps:
   when:
     ref:
     - refs/pull/**
-  depends_on:
-  - build
-
-- name: publish-dockerhub
+- depends_on:
+  - dryrun
   image: plugins/docker:19
+  name: publish-dockerhub
   settings:
     auto_tag: true
     auto_tag_suffix: arm64
@@ -261,11 +238,10 @@ steps:
     ref:
     - refs/heads/main
     - refs/tags/**
-  depends_on:
+- depends_on:
   - dryrun
-
-- name: publish-quay
   image: plugins/docker:19
+  name: publish-quay
   settings:
     auto_tag: true
     auto_tag_suffix: arm64
@@ -282,32 +258,67 @@ steps:
     ref:
     - refs/heads/main
     - refs/tags/**
-  depends_on:
-  - dryrun
-
-image_pull_secrets:
-- docker_config
-
 trigger:
   ref:
   - refs/heads/main
   - refs/tags/**
   - refs/pull/**
-
-depends_on:
-- test
-
 ---
+concurrency:
+  limit: 1
+depends_on:
+- build-binaries
+- build-container-amd64
+- build-container-arm64
+kind: pipeline
+name: docs
+platform:
+  arch: amd64
+  os: linux
+steps:
+- commands:
+  - markdownlint 'docs/content/**/*.md' 'README.md' 'CONTRIBUTING.md'
+  image: thegeeklab/markdownlint-cli
+  name: markdownlint
+- commands:
+  - npm install -g spellchecker-cli
+  - spellchecker --files '_docs/**/*.md' 'README.md' 'CONTRIBUTING.md' -d .dictionary
+    -p spell indefinite-article syntax-urls --no-suggestions
+  environment:
+    FORCE_COLOR: true
+    NPM_CONFIG_LOGLEVEL: error
+  image: node:lts-alpine
+  name: spellcheck
+- image: plugins/gh-pages
+  name: publish
+  settings:
+    pages_directory: _docs/
+    password:
+      from_secret: github_token
+    target_branch: docs
+    username:
+      from_secret: github_username
+  when:
+    ref:
+    - refs/heads/main
+trigger:
+  ref:
+  - refs/heads/main
+  - refs/tags/**
+  - refs/pull/**
+---
+depends_on:
+- docs
+image_pull_secrets:
+- docker_config
 kind: pipeline
 name: notifications
-
 platform:
-  os: linux
   arch: amd64
-
+  os: linux
 steps:
-- name: manifest-dockerhub
-  image: plugins/manifest
+- image: plugins/manifest
+  name: manifest-dockerhub
   settings:
     auto_tag: true
     ignore_missing: true
@@ -319,9 +330,8 @@ steps:
   when:
     status:
     - success
-
-- name: manifest-quay
-  image: plugins/manifest
+- image: plugins/manifest
+  name: manifest-quay
   settings:
     auto_tag: true
     ignore_missing: true
@@ -333,10 +343,7 @@ steps:
   when:
     status:
     - success
-
-- name: pushrm-dockerhub
-  image: chko/docker-pushrm:1
-  environment:
+- environment:
     DOCKER_PASS:
       from_secret: docker_password
     DOCKER_USER:
@@ -344,23 +351,23 @@ steps:
     PUSHRM_FILE: README.md
     PUSHRM_SHORT: Drone plugin to build multiarch Docker images with buildx
     PUSHRM_TARGET: thegeeklab/${DRONE_REPO_NAME}
+  image: chko/docker-pushrm:1
+  name: pushrm-dockerhub
   when:
     status:
     - success
-
-- name: pushrm-quay
-  image: chko/docker-pushrm:1
-  environment:
+- environment:
     APIKEY__QUAY_IO:
       from_secret: quay_token
     PUSHRM_FILE: README.md
     PUSHRM_TARGET: quay.io/thegeeklab/${DRONE_REPO_NAME}
+  image: chko/docker-pushrm:1
+  name: pushrm-quay
   when:
     status:
     - success
-
-- name: matrix
-  image: plugins/matrix
+- image: plugins/matrix
+  name: matrix
   settings:
     homeserver:
       from_secret: matrix_homeserver
@@ -368,17 +375,15 @@ steps:
       from_secret: matrix_password
     roomid:
       from_secret: matrix_roomid
-    template: "Status: **{{ build.status }}**<br/> Build: [{{ repo.Owner }}/{{ repo.Name }}]({{ build.link }}) ({{ build.branch }}) by {{ build.author }}<br/> Message: {{ build.message }}"
+    template: 'Status: **{{ build.status }}**<br/> Build: [{{ repo.Owner }}/{{ repo.Name
+      }}]({{ build.link }}) ({{ build.branch }}) by {{ build.author }}<br/> Message:
+      {{ build.message }}'
     username:
       from_secret: matrix_username
   when:
     status:
     - success
     - failure
-
-image_pull_secrets:
-- docker_config
-
 trigger:
   ref:
   - refs/heads/main
@@ -386,14 +391,8 @@ trigger:
   status:
   - success
   - failure
-
-depends_on:
-- build-binaries
-- build-container-amd64
-- build-container-arm64
-
 ---
 kind: signature
-hmac: d9ed315db5e0514b6151de65d4281802fad0882c5f71feff2f27a5686a794356
+hmac: 8dfd1d8d060f0e05affcae91a05e8d6184219c6d5f99747bcd73da0739e82c81
 
 ...
