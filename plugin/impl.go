@@ -59,6 +59,7 @@ type Build struct {
 	NoCache    bool            // Docker build no-cache
 	AddHost    cli.StringSlice // Docker build add-host
 	Quiet      bool            // Docker build quiet
+	Skip       bool            // Skip build
 }
 
 // Settings for the Plugin.
@@ -93,6 +94,7 @@ func (p *Plugin) Validate() error {
 			p.settings.Build.Tags = *cli.NewStringSlice(tag...)
 		} else {
 			logrus.Printf("skipping automated docker build for %s", p.settings.Build.Ref)
+			p.settings.Build.Skip = true
 			return nil
 		}
 	}
@@ -102,6 +104,10 @@ func (p *Plugin) Validate() error {
 
 // Execute provides the implementation of the plugin.
 func (p *Plugin) Execute() error {
+	if p.settings.Build.Skip {
+		return nil
+	}
+
 	// start the Docker daemon server
 	if !p.settings.Daemon.Disabled {
 		p.startDaemon()
