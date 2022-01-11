@@ -117,7 +117,6 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 			Name:        "tags",
 			EnvVars:     []string{"PLUGIN_TAG", "PLUGIN_TAGS"},
 			Usage:       "sets repository tags to use for the image",
-			Value:       cli.NewStringSlice([]string{"latest"}...),
 			FilePath:    ".tags",
 			Destination: &settings.Build.Tags,
 		},
