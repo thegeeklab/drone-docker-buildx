@@ -114,6 +114,9 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	if build.Quiet {
 		args = append(args, "--quiet")
 	}
+	if build.Output != "" {
+		args = append(args, "--output", build.Output)
+	}
 
 	if len(build.Platforms.Value()) > 0 {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))

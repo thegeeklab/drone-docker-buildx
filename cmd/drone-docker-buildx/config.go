@@ -151,6 +151,12 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 			Destination: &settings.Build.Quiet,
 		},
 		&cli.StringFlag{
+			Name:        "output",
+			EnvVars:     []string{"PLUGIN_OUTPUT"},
+			Usage:       "sets build output folder",
+			Destination: &settings.Build.Output,
+		},
+		&cli.StringFlag{
 			Name:        "target",
 			EnvVars:     []string{"PLUGIN_TARGET"},
 			Usage:       "sets the build target to use",
