@@ -29,7 +29,7 @@ func TestDefaultTags(t *testing.T) {
 		After  []string
 	}{
 		{"", []string{"latest"}},
-		{"refs/heads/master", []string{"latest"}},
+		{"refs/heads/main", []string{"latest"}},
 		{"refs/tags/0.9.0", []string{"0.9", "0.9.0"}},
 		{"refs/tags/1.0.0", []string{"1", "1.0", "1.0.0"}},
 		{"refs/tags/v1.0.0", []string{"1", "1.0", "1.0.0"}},
@@ -142,9 +142,9 @@ func Test_stripHeadPrefix(t *testing.T) {
 	}{
 		{
 			args: args{
-				ref: "refs/heads/master",
+				ref: "refs/heads/main",
 			},
-			want: "master",
+			want: "main",
 		},
 	}
 	for _, tt := range tests {
@@ -167,8 +167,8 @@ func TestUseDefaultTag(t *testing.T) {
 		{
 			name: "latest tag for default branch",
 			args: args{
-				ref:           "refs/heads/master",
-				defaultBranch: "master",
+				ref:           "refs/heads/main",
+				defaultBranch: "main",
 			},
 			want: true,
 		},
@@ -176,7 +176,7 @@ func TestUseDefaultTag(t *testing.T) {
 			name: "build from tags",
 			args: args{
 				ref:           "refs/tags/v1.0.0",
-				defaultBranch: "master",
+				defaultBranch: "main",
 			},
 			want: true,
 		},
@@ -184,7 +184,7 @@ func TestUseDefaultTag(t *testing.T) {
 			name: "skip build for not default branch",
 			args: args{
 				ref:           "refs/heads/develop",
-				defaultBranch: "master",
+				defaultBranch: "main",
 			},
 			want: false,
 		},
