@@ -140,10 +140,10 @@ pull_image
 : enforces to pull base image at build time (default `true`)
 
 compress
-: enables compression og the build context using gzip
+: enables compression of the build context using gzip
 
 output
-: sets output folder for build artifacts (format: `path` or `type=TYPE[,KEY=VALUE]`)
+: sets the [export action](https://docs.docker.com/engine/reference/commandline/buildx_build/#output) for the build result (format: `path` or `type=TYPE[,KEY=VALUE]`)
 
 repo
 : sets repository name for the image

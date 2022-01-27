@@ -153,7 +153,7 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "output",
 			EnvVars:     []string{"PLUGIN_OUTPUT"},
-			Usage:       "sets build output folder",
+			Usage:       "sets the export action for the build result",
 			Destination: &settings.Build.Output,
 		},
 		&cli.StringFlag{
@@ -178,7 +178,7 @@ func settingsFlags(settings *plugin.Settings) []cli.Flag {
 		&cli.BoolFlag{
 			Name:        "compress",
 			EnvVars:     []string{"PLUGIN_COMPRESS"},
-			Usage:       "enables compression og the build context using gzip",
+			Usage:       "enables compression of the build context using gzip",
 			Destination: &settings.Build.Compress,
 		},
 		&cli.StringFlag{
