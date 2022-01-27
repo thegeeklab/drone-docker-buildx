@@ -84,7 +84,7 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
-	if !dryrun && len(build.Tags.Value()) > 0 {
+	if !dryrun && build.Output == "" && len(build.Tags.Value()) > 0 {
 		args = append(args, "--push")
 	}
 	if build.Compress {
@@ -113,6 +113,9 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	}
 	if build.Quiet {
 		args = append(args, "--quiet")
+	}
+	if build.Output != "" {
+		args = append(args, "--output", build.Output)
 	}
 
 	if len(build.Platforms.Value()) > 0 {
