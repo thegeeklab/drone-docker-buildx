@@ -142,6 +142,9 @@ pull_image
 compress
 : enables compression og the build context using gzip
 
+output
+: sets output folder for build artifacts (format: `path` or `type=TYPE[,KEY=VALUE]`)
+
 repo
 : sets repository name for the image
 
