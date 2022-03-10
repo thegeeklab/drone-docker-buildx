@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.documentation="https://github.com/thegeeklab/dron
 ARG BUILDX_VERSION
 
 # renovate: datasource=github-releases depName=docker/buildx
-ENV BUILDX_VERSION="${BUILDX_VERSION:-v0.7.1}"
+ENV BUILDX_VERSION="${BUILDX_VERSION:-v0.8.0}"
 
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 
