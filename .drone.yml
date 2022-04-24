@@ -354,7 +354,7 @@ steps:
       DOCKER_USER:
         from_secret: docker_username
       PUSHRM_FILE: README.md
-      PUSHRM_SHORT: Drone plugin to build multiarch Docker images
+      PUSHRM_SHORT: Drone plugin to build multiarch Docker images with buildx
       PUSHRM_TARGET: thegeeklab/${DRONE_REPO_NAME}
     when:
       status:
@@ -401,6 +401,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 3dd3c3fdf24f47b2bbd401fd7d14c49f50df31855f3add113ace2584569c276f
+hmac: 34d371e33a2ae4786904e9e41ca953588d63d0a24f7123f1324d883af000bad0
 
 ...

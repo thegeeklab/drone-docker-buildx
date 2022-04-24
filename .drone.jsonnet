@@ -299,7 +299,7 @@ local PipelineNotifications = {
           from_secret: 'docker_username',
         },
         PUSHRM_FILE: 'README.md',
-        PUSHRM_SHORT: 'Drone plugin to build multiarch Docker images',
+        PUSHRM_SHORT: 'Drone plugin to build multiarch Docker images with buildx',
         PUSHRM_TARGET: 'thegeeklab/${DRONE_REPO_NAME}',
       },
       when: {
