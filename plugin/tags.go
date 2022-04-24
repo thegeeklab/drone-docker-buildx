@@ -27,7 +27,7 @@ func DefaultTagSuffix(ref, suffix string) ([]string, error) {
 	return tags, nil
 }
 
-func splitOff(input string, delim string) string {
+func splitOff(input, delim string) string {
 	parts := strings.SplitN(input, delim, 2)
 
 	if len(parts) == 2 {

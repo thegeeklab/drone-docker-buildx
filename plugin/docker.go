@@ -119,7 +119,7 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	}
 
 	if len(build.Platforms.Value()) > 0 {
-		args = append(args, "--platform", strings.Join(build.Platforms.Value()[:], ","))
+		args = append(args, "--platform", strings.Join(build.Platforms.Value(), ","))
 	}
 
 	for _, arg := range build.Tags.Value() {
