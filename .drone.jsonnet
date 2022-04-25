@@ -140,7 +140,7 @@ local PipelineBuildContainer(arch='amd64') = {
     },
     {
       name: 'dryrun',
-      image: 'plugins/docker:19',
+      image: 'thegeeklab/drone-docker:19',
       settings: {
         config: { from_secret: 'docker_config' },
         dry_run: true,
@@ -156,7 +156,7 @@ local PipelineBuildContainer(arch='amd64') = {
     },
     {
       name: 'publish-dockerhub',
-      image: 'plugins/docker:19',
+      image: 'thegeeklab/drone-docker:19',
       settings: {
         config: { from_secret: 'docker_config' },
         auto_tag: true,
@@ -173,7 +173,7 @@ local PipelineBuildContainer(arch='amd64') = {
     },
     {
       name: 'publish-quay',
-      image: 'plugins/docker:19',
+      image: 'thegeeklab/drone-docker:19',
       settings: {
         config: { from_secret: 'docker_config' },
         auto_tag: true,

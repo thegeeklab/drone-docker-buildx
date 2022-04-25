@@ -110,7 +110,7 @@ steps:
       - make build
 
   - name: dryrun
-    image: plugins/docker:19
+    image: thegeeklab/drone-docker:19
     settings:
       config:
         from_secret: docker_config
@@ -128,7 +128,7 @@ steps:
       - build
 
   - name: publish-dockerhub
-    image: plugins/docker:19
+    image: thegeeklab/drone-docker:19
     settings:
       auto_tag: true
       auto_tag_suffix: amd64
@@ -148,7 +148,7 @@ steps:
       - dryrun
 
   - name: publish-quay
-    image: plugins/docker:19
+    image: thegeeklab/drone-docker:19
     settings:
       auto_tag: true
       auto_tag_suffix: amd64
@@ -192,7 +192,7 @@ steps:
       - make build
 
   - name: dryrun
-    image: plugins/docker:19
+    image: thegeeklab/drone-docker:19
     settings:
       config:
         from_secret: docker_config
@@ -210,7 +210,7 @@ steps:
       - build
 
   - name: publish-dockerhub
-    image: plugins/docker:19
+    image: thegeeklab/drone-docker:19
     settings:
       auto_tag: true
       auto_tag_suffix: arm64
@@ -230,7 +230,7 @@ steps:
       - dryrun
 
   - name: publish-quay
-    image: plugins/docker:19
+    image: thegeeklab/drone-docker:19
     settings:
       auto_tag: true
       auto_tag_suffix: arm64
@@ -401,6 +401,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 34d371e33a2ae4786904e9e41ca953588d63d0a24f7123f1324d883af000bad0
+hmac: 72267a027d954285358c94bc19399f18303c1c5570c7ae97fbb9dda2bdc45bb5
 
 ...
