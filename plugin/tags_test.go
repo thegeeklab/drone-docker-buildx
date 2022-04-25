@@ -6,7 +6,7 @@ import (
 )
 
 func Test_stripTagPrefix(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		Before string
 		After  string
 	}{
@@ -24,7 +24,7 @@ func Test_stripTagPrefix(t *testing.T) {
 }
 
 func TestDefaultTags(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		Before string
 		After  []string
 	}{
@@ -50,7 +50,7 @@ func TestDefaultTags(t *testing.T) {
 }
 
 func TestDefaultTagsError(t *testing.T) {
-	var tests = []string{
+	tests := []string{
 		"refs/tags/x1.0.0",
 		"refs/tags/20190203",
 	}
@@ -64,7 +64,7 @@ func TestDefaultTagsError(t *testing.T) {
 }
 
 func TestDefaultTagSuffix(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		Before string
 		Suffix string
 		After  []string

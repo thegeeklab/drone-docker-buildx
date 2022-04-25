@@ -121,10 +121,12 @@ func (p *Plugin) Execute() error {
 
 	// Create Auth Config File
 	if p.settings.Login.Config != "" {
-		os.MkdirAll(dockerHome, 0600)
+		if err := os.MkdirAll(dockerHome, 0o600); err != nil {
+			return fmt.Errorf("failed to create docker home: %s", err)
+		}
 
 		path := filepath.Join(dockerHome, "config.json")
-		err := os.WriteFile(path, []byte(p.settings.Login.Config), 0600)
+		err := os.WriteFile(path, []byte(p.settings.Login.Config), 0o600)
 		if err != nil {
 			return fmt.Errorf("error writing config.json: %s", err)
 		}
@@ -140,7 +142,7 @@ func (p *Plugin) Execute() error {
 	}
 
 	if p.settings.Daemon.BuildkitConfig != "" {
-		err := os.WriteFile(buildkitConfig, []byte(p.settings.Daemon.BuildkitConfig), 0600)
+		err := os.WriteFile(buildkitConfig, []byte(p.settings.Daemon.BuildkitConfig), 0o600)
 		if err != nil {
 			return fmt.Errorf("error writing buildkit.json: %s", err)
 		}

@@ -1,0 +1,31 @@
+linters:
+  enable:
+    - gosimple
+    - deadcode
+    - typecheck
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - structcheck
+    - varcheck
+    - dupl
+    - gofmt
+    - misspell
+    - gocritic
+    - bidichk
+    - ineffassign
+    - revive
+    - gofumpt
+    - depguard
+  enable-all: false
+  disable-all: true
+  fast: false
+
+run:
+  timeout: 3m
+
+linters-settings:
+  gofumpt:
+    extra-rules: true
+    lang-version: "1.18"
