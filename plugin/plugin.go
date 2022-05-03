@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/drone-plugins/drone-plugin-lib/drone"
+	"github.com/thegeeklab/drone-plugin-lib/drone"
 )
 
 // Plugin implements drone.Plugin to provide the plugin implementation.
