@@ -8,8 +8,8 @@ import (
 	"github.com/thegeeklab/drone-docker-buildx/plugin"
 	"github.com/urfave/cli/v2"
 
-	"github.com/drone-plugins/drone-plugin-lib/errors"
-	"github.com/drone-plugins/drone-plugin-lib/urfave"
+	"github.com/thegeeklab/drone-plugin-lib/errors"
+	"github.com/thegeeklab/drone-plugin-lib/urfave"
 )
 
 var (
