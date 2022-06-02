@@ -40,7 +40,6 @@ type Login struct {
 
 // Build defines Docker build parameters.
 type Build struct {
-	Remote     string          // Git remote URL
 	Ref        string          // Git commit ref
 	Branch     string          // Git repository branch
 	Dockerfile string          // Docker build Dockerfile
