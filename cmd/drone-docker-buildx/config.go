@@ -205,7 +205,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		&cli.BoolFlag{
 			Name:        "compress",
 			EnvVars:     []string{"PLUGIN_COMPRESS"},
-			Usage:       "enable compression og the build context using gzip",
+			Usage:       "enable compression of the build context using gzip",
 			Value:       false,
 			Destination: &settings.Build.Compress,
 			Category:    category,
