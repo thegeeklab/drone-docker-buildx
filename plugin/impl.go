@@ -88,12 +88,12 @@ func (p *Plugin) Validate() error {
 				p.settings.Build.TagsSuffix,
 			)
 			if err != nil {
-				logrus.Printf("cannot generate tags from %s, invalid semantic version", p.settings.Build.Ref)
+				logrus.Infof("cannot generate tags from %s, invalid semantic version", p.settings.Build.Ref)
 				return err
 			}
 			p.settings.Build.Tags = *cli.NewStringSlice(tag...)
 		} else {
-			logrus.Printf("skip auto-tagging for %s, not on default branch or tag", p.settings.Build.Ref)
+			logrus.Infof("skip auto-tagging for %s, not on default branch or tag", p.settings.Build.Ref)
 			return nil
 		}
 	}
