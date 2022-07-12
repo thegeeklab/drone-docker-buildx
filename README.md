@@ -14,7 +14,7 @@ Drone plugin to build multiarch Docker images with buildx. This plugin is a fork
 
 ## Versioning
 
-The tags follow the major version of Docker, e.g. `20`, and the minor and patch part reflects the "version" of the plugin. A full example would be `20.12.5`. Minor versions may introduce breaking changes, while patch versions may be considered non-breaking.
+The tags follow the major version of Docker, e.g. `20`, and the minor and patch parts reflect the `version` of the plugin. A full example would be `20.12.5`. Minor versions can introduce breaking changes, while patch versions can be considered non-breaking.
 
 ## Community
 
@@ -28,7 +28,7 @@ The tags follow the major version of Docker, e.g. `20`, and the minor and patch 
 
 ## Contributors
 
-Special thanks go to all [contributors](https://github.com/thegeeklab/drone-docker-buildx/graphs/contributors). If you would like to contribute, please see the [instructions](https://github.com/thegeeklab/drone-docker-buildx/blob/main/CONTRIBUTING.md).
+Special thanks to all [contributors](https://github.com/thegeeklab/drone-docker-buildx/graphs/contributors). If you would like to contribute, please see the [instructions](https://github.com/thegeeklab/drone-docker-buildx/blob/main/CONTRIBUTING.md).
 
 ## License
 
