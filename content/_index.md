@@ -19,7 +19,7 @@ Drone plugin to build and publish multiarch Docker images with buildx.
 
 ## Versioning
 
-The tags follow the major version of Docker, e.g. `20`, and the minor and patch parts reflect the `version` of the plugin. A full example would be `20.12.5`. Minor versions can introduce breaking changes, while patch versions can be considered non-breaking.
+The tags follow the major version of Docker, e.g. `20`, the minor and patch part reflects the "version" of the plugin. A full example would be `20.12.5`. Minor versions may introduce breaking changes, while patch versions may be considered non-breaking.
 
 ## Usage
 
