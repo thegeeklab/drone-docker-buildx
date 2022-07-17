@@ -213,9 +213,8 @@ local PipelineDocs = {
     },
     {
       name: 'spellcheck',
-      image: 'node:lts-alpine',
+      image: 'thegeeklab/alpine-tools',
       commands: [
-        'npm install -g spellchecker-cli',
         "spellchecker --files '_docs/**/*.md' 'README.md' 'CONTRIBUTING.md' -d .dictionary -p spell indefinite-article syntax-urls --no-suggestions",
       ],
       environment: {
