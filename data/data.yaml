@@ -89,6 +89,11 @@ properties:
     type: string
     required: false
 
+  named_context:
+    description: Set additional named [build contexts](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context) (e.g., name=path).
+    type: list
+    required: false
+
   tags:
     description: Set repository tags to use for the image. Tags can also be loaded from a `.tags` file.
     defaultValue: latest
