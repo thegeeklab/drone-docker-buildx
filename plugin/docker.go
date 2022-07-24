@@ -117,6 +117,9 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	if build.Output != "" {
 		args = append(args, "--output", build.Output)
 	}
+	for _, arg := range build.NamedContext.Value() {
+		args = append(args, "--build-context", arg)
+	}
 
 	if len(build.Platforms.Value()) > 0 {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value(), ","))
