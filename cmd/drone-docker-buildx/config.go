@@ -129,6 +129,13 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Category:    category,
 		},
 		&cli.StringSliceFlag{
+			Name:        "named-context",
+			EnvVars:     []string{"PLUGIN_NAMED_CONTEXT"},
+			Usage:       "additional named build context",
+			Destination: &settings.Build.NamedContext,
+			Category:    category,
+		},
+		&cli.StringSliceFlag{
 			Name:        "tags",
 			EnvVars:     []string{"PLUGIN_TAG", "PLUGIN_TAGS"},
 			Usage:       "repository tags to use for the image",
