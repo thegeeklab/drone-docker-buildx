@@ -1,6 +1,6 @@
 module github.com/thegeeklab/drone-docker-buildx
 
-go 1.18
+go 1.19
 
 require (
 	github.com/coreos/go-semver v0.3.0

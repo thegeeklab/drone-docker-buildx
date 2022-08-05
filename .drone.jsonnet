@@ -8,7 +8,7 @@ local PipelineTest = {
   steps: [
     {
       name: 'deps',
-      image: 'golang:1.18',
+      image: 'golang:1.19',
       commands: [
         'make deps',
       ],
@@ -21,7 +21,7 @@ local PipelineTest = {
     },
     {
       name: 'lint',
-      image: 'golang:1.18',
+      image: 'golang:1.19',
       commands: [
         'make lint',
       ],
@@ -34,7 +34,7 @@ local PipelineTest = {
     },
     {
       name: 'test',
-      image: 'golang:1.18',
+      image: 'golang:1.19',
       commands: [
         'make test',
       ],
@@ -68,7 +68,7 @@ local PipelineBuildBinaries = {
   steps: [
     {
       name: 'build',
-      image: 'techknowlogick/xgo:go-1.18.x',
+      image: 'techknowlogick/xgo:go-1.19.x',
       commands: [
         'make release',
       ],
@@ -133,7 +133,7 @@ local PipelineBuildContainer(arch='amd64') = {
   steps: [
     {
       name: 'build',
-      image: 'golang:1.18',
+      image: 'golang:1.19',
       commands: [
         'make build',
       ],
