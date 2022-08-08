@@ -1,7 +1,7 @@
 # renovate: datasource=github-releases depName=mvdan/gofumpt
 GOFUMPT_PACKAGE_VERSION := v0.3.1
 # renovate: datasource=github-releases depName=golangci/golangci-lint
-GOLANGCI_LINT_PACKAGE_VERSION := v1.47.2
+GOLANGCI_LINT_PACKAGE_VERSION := v1.48.0
 
 EXECUTABLE := drone-docker-buildx
 
