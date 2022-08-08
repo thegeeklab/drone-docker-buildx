@@ -143,6 +143,11 @@ properties:
     type: list
     required: false
 
+  cache_to:
+    description: [Cache destination](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to) for the build cache.
+    type: string
+    required: false
+
   pull_image:
     description: Enforce to pull the base image at build time.
     defaultValue: true
