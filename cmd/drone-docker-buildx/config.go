@@ -201,6 +201,13 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.CacheFrom,
 			Category:    category,
 		},
+		&cli.StringFlag{
+			Name:        "cache-to",
+			EnvVars:     []string{"PLUGIN_CACHE_TO"},
+			Usage:       "cache destination for the build cache",
+			Destination: &settings.Build.CacheTo,
+			Category:    category,
+		},
 		&cli.BoolFlag{
 			Name:        "pull-image",
 			EnvVars:     []string{"PLUGIN_PULL_IMAGE"},

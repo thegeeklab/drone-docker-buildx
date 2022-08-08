@@ -53,6 +53,7 @@ type Build struct {
 	Target       string          // Docker build target
 	Pull         bool            // Docker build pull
 	CacheFrom    cli.StringSlice // Docker build cache-from
+	CacheTo      string          // Docker build cache-to
 	Compress     bool            // Docker build compress
 	Repo         string          // Docker build repository
 	NoCache      bool            // Docker build no-cache
@@ -166,11 +167,6 @@ func (p *Plugin) Execute() error {
 	cmds = append(cmds, commandBuilder(p.settings.Daemon))
 	cmds = append(cmds, commandBuildx())
 
-	// pre-pull cache images
-	for _, img := range p.settings.Build.CacheFrom.Value() {
-		cmds = append(cmds, commandPull(img))
-	}
-
 	cmds = append(cmds, commandBuild(p.settings.Build, p.settings.Dryrun)) // docker build
 
 	// execute all commands in batch mode.
@@ -180,9 +176,7 @@ func (p *Plugin) Execute() error {
 		trace(cmd)
 
 		err := cmd.Run()
-		if err != nil && isCommandPull(cmd.Args) {
-			fmt.Printf("Could not pull cache-from image %s. Ignoring...\n", cmd.Args[2])
-		} else if err != nil {
+		if err != nil {
 			return err
 		}
 	}

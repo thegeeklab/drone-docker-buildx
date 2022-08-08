@@ -23,15 +23,6 @@ func commandLogin(login Login) *exec.Cmd {
 	)
 }
 
-// helper to check if args match "docker pull <image>"
-func isCommandPull(args []string) bool {
-	return len(args) > 2 && args[1] == "pull"
-}
-
-func commandPull(repo string) *exec.Cmd {
-	return exec.Command(dockerExe, "pull", repo)
-}
-
 func commandLoginEmail(login Login) *exec.Cmd {
 	return exec.Command(
 		dockerExe, "login",
@@ -98,6 +89,9 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	}
 	for _, arg := range build.CacheFrom.Value() {
 		args = append(args, "--cache-from", arg)
+	}
+	if build.CacheTo != "" {
+		args = append(args, "--cache-to", build.CacheTo)
 	}
 	for _, arg := range build.ArgsEnv.Value() {
 		addProxyValue(&build, arg)
