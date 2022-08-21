@@ -144,7 +144,8 @@ properties:
     required: false
 
   cache_to:
-    description: [Cache destination](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to) for the build cache.
+    description: |
+      [Cache destination](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to) for the build cache.
     type: string
     required: false
 
