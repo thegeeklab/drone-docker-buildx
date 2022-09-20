@@ -221,3 +221,8 @@ properties:
     description: Target platforms for build.
     type: list
     required: false
+
+  labels:
+    description: Labels to add to the image.
+    type: list
+    required: false
