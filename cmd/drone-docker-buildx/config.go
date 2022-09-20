@@ -297,5 +297,12 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Platforms,
 			Category:    category,
 		},
+		&cli.StringSliceFlag{
+			Name:        "labels",
+			EnvVars:     []string{"PLUGIN_LABELS"},
+			Usage:       "labels to add to image",
+			Destination: &settings.Build.Labels,
+			Category:    category,
+		},
 	}
 }
