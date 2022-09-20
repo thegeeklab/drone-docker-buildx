@@ -61,6 +61,7 @@ type Build struct {
 	Quiet        bool            // Docker build quiet
 	Output       string          // Docker build output folder
 	NamedContext cli.StringSlice // Docker build named context
+	Labels       cli.StringSlice // Docker build labels
 }
 
 // Settings for the Plugin.
