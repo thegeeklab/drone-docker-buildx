@@ -223,6 +223,6 @@ properties:
     required: false
 
   labels:
-    description: Labels to add to Image
+    description: Labels to add to the image.
     type: list
     required: false
