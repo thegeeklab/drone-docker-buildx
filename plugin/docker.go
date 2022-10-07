@@ -123,6 +123,10 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 		args = append(args, "-t", fmt.Sprintf("%s:%s", build.Repo, arg))
 	}
 
+	for _, arg := range build.ExtraTags.Value() {
+		args = append(args, "-t", arg)
+	}
+
 	for _, arg := range build.Labels.Value() {
 		args = append(args, "--label", arg)
 	}

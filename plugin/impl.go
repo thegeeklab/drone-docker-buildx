@@ -47,6 +47,7 @@ type Build struct {
 	TagsAuto     bool            // Docker build auto tag
 	TagsSuffix   string          // Docker build tags with suffix
 	Tags         cli.StringSlice // Docker build tags
+	ExtraTags    cli.StringSlice // Docker build tags including registry
 	Platforms    cli.StringSlice // Docker build target platforms
 	Args         cli.StringSlice // Docker build args
 	ArgsEnv      cli.StringSlice // Docker build args from env
