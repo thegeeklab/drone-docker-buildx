@@ -159,6 +159,14 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Category:    category,
 		},
 		&cli.StringSliceFlag{
+			Name:        "extra.tags",
+			EnvVars:     []string{"PLUGIN_EXTRA_TAGS"},
+			Usage:       "additional tags to use for the image including registry",
+			FilePath:    ".extratags",
+			Destination: &settings.Build.ExtraTags,
+			Category:    category,
+		},
+		&cli.StringSliceFlag{
 			Name:        "args",
 			EnvVars:     []string{"PLUGIN_BUILD_ARGS"},
 			Usage:       "custom build arguments for the build",

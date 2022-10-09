@@ -117,6 +117,14 @@ properties:
     type: string
     required: false
 
+  extra_tags:
+    description: |
+      Set additional tags to be used for the image. Additional tags can also be loaded from an `.extratags` file. This function can be used
+      to push images to multiple registries at once. Therefore, it is necessary to use the `config` flag to provide a configuration file
+      that contains the authentication information for all used registries.
+    type: list
+    required: false
+
   build_args:
     description: Ccustom build arguments to pass to the build.
     type: list
