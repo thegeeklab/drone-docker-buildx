@@ -29,11 +29,12 @@ func main() {
 	}
 
 	app := &cli.App{
-		Name:    "drone-docker-buildx",
-		Usage:   "build docker container with DinD and buildx",
-		Version: BuildVersion,
-		Flags:   append(settingsFlags(settings, urfave.FlagsPluginCategory), urfave.Flags()...),
-		Action:  run(settings),
+		Name:               "drone-docker-buildx",
+		Usage:              "build docker container with DinD and buildx",
+		Version:            BuildVersion,
+		Flags:              append(settingsFlags(settings, urfave.FlagsPluginCategory), urfave.Flags()...),
+		SliceFlagSeparator: ";",
+		Action:             run(settings),
 	}
 
 	if err := app.Run(os.Args); err != nil {
