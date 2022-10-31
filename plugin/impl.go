@@ -53,7 +53,7 @@ type Build struct {
 	ArgsEnv      cli.StringSlice // Docker build args from env
 	Target       string          // Docker build target
 	Pull         bool            // Docker build pull
-	CacheFrom    cli.StringSlice // Docker build cache-from
+	CacheFrom    []string        // Docker build cache-from
 	CacheTo      string          // Docker build cache-to
 	Compress     bool            // Docker build compress
 	Repo         string          // Docker build repository

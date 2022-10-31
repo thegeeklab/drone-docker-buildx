@@ -9,6 +9,7 @@ import (
 	"github.com/thegeeklab/drone-docker-buildx/plugin"
 	"github.com/urfave/cli/v2"
 
+	"github.com/thegeeklab/drone-plugin-lib/v2/drone"
 	"github.com/thegeeklab/drone-plugin-lib/v2/urfave"
 )
 
@@ -29,12 +30,11 @@ func main() {
 	}
 
 	app := &cli.App{
-		Name:               "drone-docker-buildx",
-		Usage:              "build docker container with DinD and buildx",
-		Version:            BuildVersion,
-		Flags:              append(settingsFlags(settings, urfave.FlagsPluginCategory), urfave.Flags()...),
-		SliceFlagSeparator: ";",
-		Action:             run(settings),
+		Name:    "drone-docker-buildx",
+		Usage:   "build docker container with DinD and buildx",
+		Version: BuildVersion,
+		Flags:   append(settingsFlags(settings, urfave.FlagsPluginCategory), urfave.Flags()...),
+		Action:  run(settings),
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -45,6 +45,8 @@ func main() {
 func run(settings *plugin.Settings) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		urfave.LoggingFromContext(ctx)
+
+		settings.Build.CacheFrom = ctx.Generic("cache-from").(*drone.StringSliceFlag).Get()
 
 		plugin := plugin.New(
 			*settings,
