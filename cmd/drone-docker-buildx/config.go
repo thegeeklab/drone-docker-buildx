@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/thegeeklab/drone-docker-buildx/plugin"
+	"github.com/thegeeklab/drone-plugin-lib/v2/drone"
 	"github.com/urfave/cli/v2"
 )
 
@@ -202,12 +203,12 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Target,
 			Category:    category,
 		},
-		&cli.StringSliceFlag{
-			Name:        "cache-from",
-			EnvVars:     []string{"PLUGIN_CACHE_FROM"},
-			Usage:       "images to consider as cache sources",
-			Destination: &settings.Build.CacheFrom,
-			Category:    category,
+		&cli.GenericFlag{
+			Name:     "cache-from",
+			EnvVars:  []string{"PLUGIN_CACHE_FROM"},
+			Usage:    "images to consider as cache sources",
+			Value:    &drone.StringSliceFlag{},
+			Category: category,
 		},
 		&cli.StringFlag{
 			Name:        "cache-to",

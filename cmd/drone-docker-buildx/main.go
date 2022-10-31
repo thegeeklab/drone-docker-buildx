@@ -9,6 +9,7 @@ import (
 	"github.com/thegeeklab/drone-docker-buildx/plugin"
 	"github.com/urfave/cli/v2"
 
+	"github.com/thegeeklab/drone-plugin-lib/v2/drone"
 	"github.com/thegeeklab/drone-plugin-lib/v2/urfave"
 )
 
@@ -44,6 +45,8 @@ func main() {
 func run(settings *plugin.Settings) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		urfave.LoggingFromContext(ctx)
+
+		settings.Build.CacheFrom = ctx.Generic("cache-from").(*drone.StringSliceFlag).Get()
 
 		plugin := plugin.New(
 			*settings,

@@ -87,7 +87,7 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	if build.NoCache {
 		args = append(args, "--no-cache")
 	}
-	for _, arg := range build.CacheFrom.Value() {
+	for _, arg := range build.CacheFrom {
 		args = append(args, "--cache-from", arg)
 	}
 	if build.CacheTo != "" {
