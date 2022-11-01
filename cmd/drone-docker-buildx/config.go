@@ -277,14 +277,6 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Category:    category,
 		},
 		&cli.BoolFlag{
-			Name:        "docker.purge",
-			EnvVars:     []string{"PLUGIN_PURGE"},
-			Usage:       "enable cleanup of the docker environment at the end of a build",
-			Value:       true,
-			Destination: &settings.Cleanup,
-			Category:    category,
-		},
-		&cli.BoolFlag{
 			Name:        "no-cache",
 			EnvVars:     []string{"PLUGIN_NO_CACHE"},
 			Usage:       "disable the usage of cached intermediate containers",

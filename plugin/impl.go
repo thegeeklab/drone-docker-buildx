@@ -67,11 +67,10 @@ type Build struct {
 
 // Settings for the Plugin.
 type Settings struct {
-	Daemon  Daemon
-	Login   Login
-	Build   Build
-	Dryrun  bool
-	Cleanup bool
+	Daemon Daemon
+	Login  Login
+	Build  Build
+	Dryrun bool
 }
 
 // Validate handles the settings validation of the plugin.
