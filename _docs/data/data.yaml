@@ -208,12 +208,6 @@ properties:
     type: string
     required: false
 
-  purge:
-    description: Enable cleanup of the docker environment at the end of a build.
-    defaultValue: true
-    type: bool
-    required: false
-
   no_cache:
     description: Disable the usage of cached intermediate containers.
     defaultValue: false
