@@ -9,6 +9,13 @@ import (
 // settingsFlags has the cli.Flags for the plugin.Settings.
 func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 	return []cli.Flag{
+		&cli.StringFlag{
+			Name:        "builder-name",
+			EnvVars:     []string{"PLUGIN_BUILDER_NAME"},
+			Usage:       "the buildx builder to use",
+			Destination: &settings.Build.BuilderName,
+			Category:    category,
+		},
 		&cli.BoolFlag{
 			Name:        "dry-run",
 			EnvVars:     []string{"PLUGIN_DRY_RUN"},

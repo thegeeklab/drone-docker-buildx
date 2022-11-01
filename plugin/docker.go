@@ -75,6 +75,9 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	}
 
 	args = append(args, build.Context)
+	if build.BuilderName != "" {
+		args = append(args, "--builder-name", build.BuilderName)
+	}
 	if !dryrun && build.Output == "" && len(build.Tags.Value()) > 0 {
 		args = append(args, "--push")
 	}

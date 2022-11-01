@@ -1,5 +1,10 @@
 ---
 properties:
+  builder_name:
+    description: Buildx builder to use.
+    type: string
+    required: false
+
   dry_run:
     description: Disable docker push.
     type: bool

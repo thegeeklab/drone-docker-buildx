@@ -63,6 +63,7 @@ type Build struct {
 	Output       string          // Docker build output folder
 	NamedContext cli.StringSlice // Docker build named context
 	Labels       cli.StringSlice // Docker build labels
+	BuilderName  string          // Docker buildx builder
 }
 
 // Settings for the Plugin.
