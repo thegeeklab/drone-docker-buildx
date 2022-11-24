@@ -46,7 +46,7 @@ steps:
 
 <!-- prettier-ignore-start -->
 <!-- spellchecker-disable -->
-{{< propertylist name=drone-docker-buildx.data >}}
+{{< propertylist name=drone-docker-buildx.data sort=name >}}
 <!-- spellchecker-enable -->
 <!-- prettier-ignore-end -->
 
