@@ -53,6 +53,7 @@ steps:
   - name: build
     image: techknowlogick/xgo:go-1.19.x
     commands:
+      - ln -s /drone/src /source
       - make release
 
   - name: executable
@@ -380,6 +381,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: b3fcec8e8669cb90bbf5cf5e17db99f2b3b813f117a69f43045cefbb59c5c862
+hmac: 406af709c926dd4fd1b189a89d7b10d65e889e881d4fec63ac3526672a3e3336
 
 ...
