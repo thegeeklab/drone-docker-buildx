@@ -154,9 +154,9 @@ properties:
       ```Yaml
       - name: Build
         image: thegeeklab/drone-docker-buildx:20
-        - name: settings
+        settings:
           repo: example/repo
-          - name: cache_from
+          cache_from:
             # using quotes double-escaping is required
             - "type=registry\\\\,ref=example"
             - 'type=foo\\,ref=bar'
