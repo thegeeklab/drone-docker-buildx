@@ -70,6 +70,7 @@ local PipelineBuildBinaries = {
       name: 'build',
       image: 'techknowlogick/xgo:go-1.19.x',
       commands: [
+        'ln -s /drone/src /source',
         'make release',
       ],
     },
