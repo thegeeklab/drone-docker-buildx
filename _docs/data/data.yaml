@@ -1,106 +1,106 @@
 ---
 properties:
-  dry_run:
+  - name: dry_run
     description: Disable docker push.
     type: bool
     required: false
 
-  mirror:
+  - name: mirror
     description: Use a registry mirror to pull images.
     type: string
     required: false
 
-  storage_driver:
+  - name: storage_driver
     description: The docker daemon storage driver.
     type: string
     required: false
 
-  storage_path:
+  - name: storage_path
     description: The docker daemon storage path.
     defaultValue: /var/lib/docker
     type: string
     required: false
 
-  bip:
+  - name: bip
     description: Allows the docker daemon to bride IP address.
     type: string
     required: false
 
-  mtu:
+  - name: mtu
     description: A docker daemon custom MTU.
     type: string
     required: false
 
-  custom_dns:
+  - name: custom_dns
     description: Custom docker daemon DNS server.
     type: list
     required: false
 
-  custom_dns_search:
+  - name: custom_dns_search
     description: Custom docker daemon DNS search domain.
     type: list
     required: false
 
-  insecure:
+  - name: insecure
     description: Enable the usage of insecure registries.
     type: bool
     defaultValue: false
     required: false
 
-  ipv6:
+  - name: ipv6
     description: Enable docker daemon IPv6 support.
     type: bool
     defaultValue: false
     required: false
 
-  experimental:
+  - name: experimental
     description: Enable docker daemon experimental mode.
     type: bool
     defaultValue: false
     required: false
 
-  debug:
+  - name: debug
     description: Enable verbose debug mode for the docker daemon.
     type: string
     defaultValue: false
     required: false
 
-  daemon_off:
+  - name: daemon_off
     description: Disable the startup of the docker daemon.
     type: string
     defaultValue: false
     required: false
 
-  buildkit_config:
+  - name: buildkit_config
     description: Content of the docker buildkit json config.
     type: string
     defaultValue: false
     required: false
 
-  dockerfile:
+  - name: dockerfile
     description: Set dockerfile to use for the image build.
     defaultValue: Dockerfile
     type: string
     required: false
 
-  context:
+  - name: context
     description: Set the path of the build context to use.
     defaultValue: .
     type: string
     required: false
 
-  named_context:
+  - name: named_context
     description: Set additional named [build contexts](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context) (e.g., name=path).
     type: list
     required: false
 
-  tags:
+  - name: tags
     description: Set repository tags to use for the image. Tags can also be loaded from a `.tags` file.
     defaultValue: latest
     type: list
     required: false
 
-  auto_tag:
+  - name: auto_tag
     description: |
       Generate tag names automatically based on git branch and git tag. When this feature is enabled and the event type is `tag`,
       the plugin will automatically tag the image using the standard semVer convention. For example:
@@ -112,12 +112,12 @@ properties:
     type: bool
     required: false
 
-  auto_tag_suffix:
+  - name: auto_tag_suffix
     description: Generate tag names with the given suffix.
     type: string
     required: false
 
-  extra_tags:
+  - name: extra_tags
     description: |
       Set additional tags to be used for the image. Additional tags can also be loaded from an `.extratags` file. This function can be used
       to push images to multiple registries at once. Therefore, it is necessary to use the `config` flag to provide a configuration file
@@ -125,28 +125,28 @@ properties:
     type: list
     required: false
 
-  build_args:
+  - name: build_args
     description: Ccustom build arguments to pass to the build.
     type: list
     required: false
 
-  build_args_from_env:
+  - name: build_args_from_env
     description: Forward environment variables as custom arguments to the build.
     type: list
     required: false
 
-  quiet:
+  - name: quiet
     description: Enable suppression of the build output.
     defaultValue: false
     type: bool
     required: false
 
-  target:
+  - name: target
     description: The docker build target.
     type: string
     required: false
 
-  cache_from:
+  - name: cache_from
     description: |
       Images to consider as [cache sources](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from). To properly work,
       commas used in the cache source entries need to be escaped:
@@ -164,25 +164,25 @@ properties:
     type: list
     required: false
 
-  cache_to:
+  - name: cache_to
     description: |
       [Cache destination](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to) for the build cache.
     type: string
     required: false
 
-  pull_image:
+  - name: pull_image
     description: Enforce to pull the base image at build time.
     defaultValue: true
     type: bool
     required: false
 
-  compress:
+  - name: compress
     description: Enable compression of the build context using gzip.
     defaultValue: false
     type: bool
     required: false
 
-  output:
+  - name: output
     description: |
       [Export action](https://docs.docker.com/engine/reference/commandline/buildx_build/#output) for the build result
       (format: `path` or `type=TYPE[,KEY=VALUE]`).
@@ -190,54 +190,54 @@ properties:
     type: bool
     required: false
 
-  repo:
+  - name: repo
     description: Repository name for the image.
     type: string
     required: false
 
-  registry:
+  - name: registry
     description: Docker registry to upload images.
     defaultValue: https://index.docker.io/v1/
     type: string
     required: false
 
-  username:
+  - name: username
     description: Username for authentication with the registry.
     type: string
     required: false
 
-  password:
+  - name: password
     description: Password for authentication with the registry.
     type: string
     required: false
 
-  email:
+  - name: email
     description: E-Mail address for authentication with the registry.
     type: string
     required: false
 
-  config:
+  - name: config
     description: Content of the docker daemon json config.
     type: string
     required: false
 
-  no_cache:
+  - name: no_cache
     description: Disable the usage of cached intermediate containers.
     defaultValue: false
     type: string
     required: false
 
-  add_host:
+  - name: add_host
     description: Additional `host:ip` mapping.
     type: list
     required: false
 
-  platforms:
+  - name: platforms
     description: Target platforms for build.
     type: list
     required: false
 
-  labels:
+  - name: labels
     description: Labels to add to the image.
     type: list
     required: false
