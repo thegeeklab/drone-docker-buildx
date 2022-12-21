@@ -191,7 +191,9 @@ properties:
     required: false
 
   - name: repo
-    description: Repository name for the image.
+    description: |
+      Repository name for the image. If the image is to be pushed to registries other than the default DockerHub,
+      it is necessary to set `repo` as fully-qualified name.
     type: string
     required: false
 
