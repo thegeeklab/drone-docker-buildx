@@ -50,6 +50,28 @@ steps:
 <!-- spellchecker-enable -->
 <!-- prettier-ignore-end -->
 
+### Examples
+
+**Push to other registries than DockerHub:**
+
+If the created image is to be pushed to registries other than the default DockerHub, it is necessary to set `registry` and `repo` as fully-qualified name.
+
+```YAML
+kind: pipeline
+name: default
+
+steps:
+  - name: docker
+    image: thegeeklab/drone-docker-buildx
+    privileged: true
+    settings:
+      registry: ghcr.io
+      username: octocat
+      password: secret-access-token
+      repo: ghcr.io/octocat/example
+      tags: latest
+```
+
 ## Build
 
 Build the binary with the following command:
