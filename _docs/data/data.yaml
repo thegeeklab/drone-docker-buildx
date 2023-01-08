@@ -76,7 +76,7 @@ properties:
       Content of the docker buildkit toml [config](https://github.com/moby/buildkit/blob/master/docs/buildkitd.toml.md). Example:
 
       ```TOML
-        - name: Build
+      - name: Build
         image: thegeeklab/drone-docker-buildx:20
         settings:
           repo: example/repo
