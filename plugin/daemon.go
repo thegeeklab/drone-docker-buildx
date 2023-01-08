@@ -9,7 +9,7 @@ const (
 	dockerExe      = "/usr/local/bin/docker"
 	dockerdExe     = "/usr/local/bin/dockerd"
 	dockerHome     = "/root/.docker/"
-	buildkitConfig = "/tmp/buildkit.json"
+	buildkitConfig = "/tmp/buildkit.toml"
 )
 
 func (p Plugin) startDaemon() {

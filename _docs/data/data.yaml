@@ -72,7 +72,19 @@ properties:
     required: false
 
   - name: buildkit_config
-    description: Content of the docker buildkit json config.
+    description: |
+      Content of the docker buildkit toml [config](https://github.com/moby/buildkit/blob/master/docs/buildkitd.toml.md). Example:
+
+      ```TOML
+        - name: Build
+        image: thegeeklab/drone-docker-buildx:20
+        settings:
+          repo: example/repo
+          buildkit_config: |
+          [registry."registry.local:30081"]
+            http = true
+            insecure = true
+      ```
     type: string
     defaultValue: false
     required: false
