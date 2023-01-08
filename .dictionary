@@ -9,7 +9,7 @@ config
 dockerfile
 og
 gzip
-json
+toml
 config
 host:ip
 drone-docker-buildx

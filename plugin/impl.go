@@ -146,7 +146,7 @@ func (p *Plugin) Execute() error {
 	if p.settings.Daemon.BuildkitConfig != "" {
 		err := os.WriteFile(buildkitConfig, []byte(p.settings.Daemon.BuildkitConfig), 0o600)
 		if err != nil {
-			return fmt.Errorf("error writing buildkit.json: %s", err)
+			return fmt.Errorf("error writing buildkit.toml: %s", err)
 		}
 	}
 
