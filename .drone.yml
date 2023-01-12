@@ -118,14 +118,11 @@ steps:
     when:
       ref:
         - refs/pull/**
-    depends_on:
-      - build
 
   - name: publish-dockerhub
     image: thegeeklab/drone-docker-buildx:20
     settings:
       auto_tag: true
-      auto_tag_suffix: amd64
       dockerfile: docker/Dockerfile.multiarch
       password:
         from_secret: docker_password
@@ -147,7 +144,6 @@ steps:
     image: thegeeklab/drone-docker-buildx:20
     settings:
       auto_tag: true
-      auto_tag_suffix: amd64
       dockerfile: docker/Dockerfile.multiarch
       password:
         from_secret: quay_password
@@ -287,6 +283,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 37cc955f552b97b51ece193593fccfb009877cb75791f8c4923be5f49a28c77e
+hmac: 64c8fb0b98dfe15e5bdfbce119f9b759ed5f92fd9b86ae02fffa3d5f3f537017
 
 ...
