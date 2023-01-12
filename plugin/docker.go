@@ -131,6 +131,10 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 		args = append(args, "--label", arg)
 	}
 
+	if build.Provenance != "" {
+		args = append(args, "--provenance", build.Provenance)
+	}
+
 	return exec.Command(dockerExe, args...)
 }
 
