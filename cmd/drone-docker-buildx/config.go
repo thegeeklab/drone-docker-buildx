@@ -305,5 +305,12 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Labels,
 			Category:    category,
 		},
+		&cli.StringFlag{
+			Name:        "provenance",
+			EnvVars:     []string{"PLUGIN_PROVENANCE"},
+			Usage:       "generates provenance attestation for the build",
+			Destination: &settings.Build.Provenance,
+			Category:    category,
+		},
 	}
 }

@@ -255,3 +255,8 @@ properties:
     description: Labels to add to the image.
     type: list
     required: false
+
+  - name: provenance
+    description: Generate [provenance](https://docs.docker.com/build/attestations/slsa-provenance/) attestation for the build (shorthand for `--attest=type=provenance`).
+    type: string
+    required: false
