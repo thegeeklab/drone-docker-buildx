@@ -111,10 +111,11 @@ steps:
       - make build
 
   - name: dryrun
-    image: thegeeklab/drone-docker-buildx:20
+    image: thegeeklab/drone-docker-buildx:20.12
     settings:
       dockerfile: docker/Dockerfile.amd64
       dry_run: true
+      provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
     when:
       ref:
@@ -123,13 +124,14 @@ steps:
       - build
 
   - name: publish-dockerhub
-    image: thegeeklab/drone-docker-buildx:20
+    image: thegeeklab/drone-docker-buildx:20.12
     settings:
       auto_tag: true
       auto_tag_suffix: amd64
       dockerfile: docker/Dockerfile.amd64
       password:
         from_secret: docker_password
+      provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
       username:
         from_secret: docker_username
@@ -183,10 +185,11 @@ steps:
       - make build
 
   - name: dryrun
-    image: thegeeklab/drone-docker-buildx:20
+    image: thegeeklab/drone-docker-buildx:20.12
     settings:
       dockerfile: docker/Dockerfile.arm64
       dry_run: true
+      provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
     when:
       ref:
@@ -195,13 +198,14 @@ steps:
       - build
 
   - name: publish-dockerhub
-    image: thegeeklab/drone-docker-buildx:20
+    image: thegeeklab/drone-docker-buildx:20.12
     settings:
       auto_tag: true
       auto_tag_suffix: arm64
       dockerfile: docker/Dockerfile.arm64
       password:
         from_secret: docker_password
+      provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
       username:
         from_secret: docker_username
@@ -381,6 +385,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 7c440129940e7cd088d27b061a00fd5a2a4eef2f551f4560b1642b0c46936084
+hmac: 8dfbe014c9e7bc9617e21d240a9768b312f3dd4ac21075369b66aa108c76e122
 
 ...

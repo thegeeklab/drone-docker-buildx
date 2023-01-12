@@ -141,8 +141,9 @@ local PipelineBuildContainer(arch='amd64') = {
     },
     {
       name: 'dryrun',
-      image: 'thegeeklab/drone-docker-buildx:20',
+      image: 'thegeeklab/drone-docker-buildx:20.12',
       settings: {
+        provenance: 'false',
         dry_run: true,
         dockerfile: 'docker/Dockerfile.' + arch,
         repo: 'thegeeklab/${DRONE_REPO_NAME}',
@@ -154,8 +155,9 @@ local PipelineBuildContainer(arch='amd64') = {
     },
     {
       name: 'publish-dockerhub',
-      image: 'thegeeklab/drone-docker-buildx:20',
+      image: 'thegeeklab/drone-docker-buildx:20.12',
       settings: {
+        provenance: 'false',
         auto_tag: true,
         auto_tag_suffix: arch,
         dockerfile: 'docker/Dockerfile.' + arch,
