@@ -113,7 +113,6 @@ steps:
       platforms:
         - linux/amd64
         - linux/arm64
-      provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
     when:
       ref:
@@ -129,7 +128,6 @@ steps:
       platforms:
         - linux/amd64
         - linux/arm64
-      provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
       username:
         from_secret: docker_username
@@ -150,7 +148,6 @@ steps:
       platforms:
         - linux/amd64
         - linux/arm64
-      provenance: false
       registry: quay.io
       repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
       username:
@@ -283,6 +280,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 0a2edb569e156dbb6c32a44b812757a28156b31a44325585c0f19ee0c6706fd4
+hmac: 061439f031fceeed1bcc3640879c99f10125f4f6f2fad10434e9f9b861a53ebb
 
 ...
