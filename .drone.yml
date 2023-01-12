@@ -108,7 +108,7 @@ steps:
   - name: dryrun
     image: thegeeklab/drone-docker-buildx:20
     settings:
-      dockerfile: docker/Dockerfile.multiarch
+      dockerfile: Dockerfile.multiarch
       dry_run: true
       platforms:
         - linux/amd64
@@ -123,7 +123,7 @@ steps:
     image: thegeeklab/drone-docker-buildx:20
     settings:
       auto_tag: true
-      dockerfile: docker/Dockerfile.multiarch
+      dockerfile: Dockerfile.multiarch
       password:
         from_secret: docker_password
       platforms:
@@ -144,7 +144,7 @@ steps:
     image: thegeeklab/drone-docker-buildx:20
     settings:
       auto_tag: true
-      dockerfile: docker/Dockerfile.multiarch
+      dockerfile: Dockerfile.multiarch
       password:
         from_secret: quay_password
       platforms:
@@ -283,6 +283,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 64c8fb0b98dfe15e5bdfbce119f9b759ed5f92fd9b86ae02fffa3d5f3f537017
+hmac: 0a2edb569e156dbb6c32a44b812757a28156b31a44325585c0f19ee0c6706fd4
 
 ...
