@@ -98,23 +98,21 @@ depends_on:
 
 ---
 kind: pipeline
-name: build-container-amd64
+name: build-container
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-  - name: build
-    image: golang:1.19
-    commands:
-      - make build
-
   - name: dryrun
     image: thegeeklab/drone-docker-buildx:20
     settings:
-      dockerfile: docker/Dockerfile.amd64
+      dockerfile: docker/Dockerfile.multiarch
       dry_run: true
+      platforms:
+        - linux/amd64
+        - linux/arm64
       provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
     when:
@@ -128,9 +126,12 @@ steps:
     settings:
       auto_tag: true
       auto_tag_suffix: amd64
-      dockerfile: docker/Dockerfile.amd64
+      dockerfile: docker/Dockerfile.multiarch
       password:
         from_secret: docker_password
+      platforms:
+        - linux/amd64
+        - linux/arm64
       provenance: false
       repo: thegeeklab/${DRONE_REPO_NAME}
       username:
@@ -147,84 +148,12 @@ steps:
     settings:
       auto_tag: true
       auto_tag_suffix: amd64
-      dockerfile: docker/Dockerfile.amd64
+      dockerfile: docker/Dockerfile.multiarch
       password:
         from_secret: quay_password
-      provenance: false
-      registry: quay.io
-      repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
-      username:
-        from_secret: quay_username
-    when:
-      ref:
-        - refs/heads/main
-        - refs/tags/**
-    depends_on:
-      - dryrun
-
-trigger:
-  ref:
-    - refs/heads/main
-    - refs/tags/**
-    - refs/pull/**
-
-depends_on:
-  - test
-
----
-kind: pipeline
-name: build-container-arm64
-
-platform:
-  os: linux
-  arch: arm64
-
-steps:
-  - name: build
-    image: golang:1.19
-    commands:
-      - make build
-
-  - name: dryrun
-    image: thegeeklab/drone-docker-buildx:20
-    settings:
-      dockerfile: docker/Dockerfile.arm64
-      dry_run: true
-      provenance: false
-      repo: thegeeklab/${DRONE_REPO_NAME}
-    when:
-      ref:
-        - refs/pull/**
-    depends_on:
-      - build
-
-  - name: publish-dockerhub
-    image: thegeeklab/drone-docker-buildx:20
-    settings:
-      auto_tag: true
-      auto_tag_suffix: arm64
-      dockerfile: docker/Dockerfile.arm64
-      password:
-        from_secret: docker_password
-      provenance: false
-      repo: thegeeklab/${DRONE_REPO_NAME}
-      username:
-        from_secret: docker_username
-    when:
-      ref:
-        - refs/heads/main
-        - refs/tags/**
-    depends_on:
-      - dryrun
-
-  - name: publish-quay
-    image: thegeeklab/drone-docker-buildx:20
-    settings:
-      auto_tag: true
-      auto_tag_suffix: arm64
-      dockerfile: docker/Dockerfile.arm64
-      password:
-        from_secret: quay_password
+      platforms:
+        - linux/amd64
+        - linux/arm64
       provenance: false
       registry: quay.io
       repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
@@ -304,34 +233,6 @@ platform:
   arch: amd64
 
 steps:
-  - name: manifest-dockerhub
-    image: plugins/manifest
-    settings:
-      auto_tag: true
-      ignore_missing: true
-      password:
-        from_secret: docker_password
-      spec: docker/manifest.tmpl
-      username:
-        from_secret: docker_username
-    when:
-      status:
-        - success
-
-  - name: manifest-quay
-    image: plugins/manifest
-    settings:
-      auto_tag: true
-      ignore_missing: true
-      password:
-        from_secret: quay_password
-      spec: docker/manifest-quay.tmpl
-      username:
-        from_secret: quay_username
-    when:
-      status:
-        - success
-
   - name: pushrm-dockerhub
     image: chko/docker-pushrm:1
     environment:
@@ -387,6 +288,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 0263cf6df573ba55933b837db50a6f7e3a8fd422bb4506bc09a97e89085473bd
+hmac: cbb968ab63fb5d54ad2d31dbe315058fa89b4fc7170e75295d605c6fcffbf727
 
 ...

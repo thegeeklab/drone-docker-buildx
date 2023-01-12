@@ -1,3 +1,13 @@
+FROM --platform=$BUILDPLATFORM golang:1.19 as build
+
+ARG TARGETOS
+ARG TARGETARCH
+
+ADD ../ /src
+WORKDIR /src
+
+RUN make build
+
 FROM docker:20.10-dind@sha256:2e0135466bcb3398e7f3943b87aef5c036dbaf1683805b8bfe992a477f7269e9
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
@@ -23,6 +33,6 @@ RUN apk --update add --virtual .build-deps curl && \
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/*
 
-ADD dist/drone-docker-buildx /bin/
+COPY --from=build /src/dist/drone-docker-buildx /bin/drone-docker-buildx
 
 ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "drone-docker-buildx"]

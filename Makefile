@@ -22,6 +22,8 @@ GENERATE ?=
 XGO_VERSION := go-1.19.x
 XGO_TARGETS ?= linux/amd64,linux/arm64
 
+TARGETOS ?= linux
+TARGETARCH ?= amd64
 TAGS ?= netgo
 
 ifndef VERSION
@@ -69,7 +71,7 @@ test:
 build: $(DIST)/$(EXECUTABLE)
 
 $(DIST)/$(EXECUTABLE): $(SOURCES)
-	$(GO) build -v -tags '$(TAGS)' -ldflags '-extldflags "-static" $(LDFLAGS)' -o $@ ./cmd/$(EXECUTABLE)
+	GOOS=${TARGETOS} GOARCH=${TARGETARCH} $(GO) build -v -tags '$(TAGS)' -ldflags '-extldflags "-static" $(LDFLAGS)' -o $@ ./cmd/$(EXECUTABLE)
 
 $(DIST_DIRS):
 	mkdir -p $(DIST_DIRS)
