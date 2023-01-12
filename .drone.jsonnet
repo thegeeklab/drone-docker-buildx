@@ -172,8 +172,9 @@ local PipelineBuildContainer(arch='amd64') = {
     },
     {
       name: 'publish-quay',
-      image: 'thegeeklab/drone-docker-buildx:20',
+      image: 'thegeeklab/drone-docker-buildx:20.12',
       settings: {
+        provenance: 'false',
         auto_tag: true,
         auto_tag_suffix: arch,
         dockerfile: 'docker/Dockerfile.' + arch,

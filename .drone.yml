@@ -143,13 +143,14 @@ steps:
       - dryrun
 
   - name: publish-quay
-    image: thegeeklab/drone-docker-buildx:20
+    image: thegeeklab/drone-docker-buildx:20.12
     settings:
       auto_tag: true
       auto_tag_suffix: amd64
       dockerfile: docker/Dockerfile.amd64
       password:
         from_secret: quay_password
+      provenance: false
       registry: quay.io
       repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
       username:
@@ -217,13 +218,14 @@ steps:
       - dryrun
 
   - name: publish-quay
-    image: thegeeklab/drone-docker-buildx:20
+    image: thegeeklab/drone-docker-buildx:20.12
     settings:
       auto_tag: true
       auto_tag_suffix: arm64
       dockerfile: docker/Dockerfile.arm64
       password:
         from_secret: quay_password
+      provenance: false
       registry: quay.io
       repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
       username:
@@ -385,6 +387,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: 8dfbe014c9e7bc9617e21d240a9768b312f3dd4ac21075369b66aa108c76e122
+hmac: 001f6721ad511db294f8611b357c04ea70aaf41e3f3a42876df3c7243bbe4fd4
 
 ...
