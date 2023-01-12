@@ -221,8 +221,7 @@ trigger:
 
 depends_on:
   - build-binaries
-  - build-container-amd64
-  - build-container-arm64
+  - build-container
 
 ---
 kind: pipeline
@@ -288,6 +287,6 @@ depends_on:
 
 ---
 kind: signature
-hmac: cbb968ab63fb5d54ad2d31dbe315058fa89b4fc7170e75295d605c6fcffbf727
+hmac: 37cc955f552b97b51ece193593fccfb009877cb75791f8c4923be5f49a28c77e
 
 ...
