@@ -17,6 +17,8 @@ LABEL org.opencontainers.image.url="https://github.com/thegeeklab/drone-docker-b
 LABEL org.opencontainers.image.source="https://github.com/thegeeklab/drone-docker-buildx"
 LABEL org.opencontainers.image.documentation="https://github.com/thegeeklab/drone-docker-buildx"
 
+ARG TARGETOS
+ARG TARGETARCH
 ARG BUILDX_VERSION
 
 # renovate: datasource=github-releases depName=docker/buildx
@@ -27,7 +29,8 @@ ENV DOCKER_HOST=unix:///var/run/docker.sock
 RUN apk --update add --virtual .build-deps curl && \
     apk --update add --no-cache git && \
     mkdir -p /usr/lib/docker/cli-plugins/ && \
-    curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION##v}/buildx-v${BUILDX_VERSION##v}.linux-amd64" && \
+    curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx \
+        "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION##v}/buildx-v${BUILDX_VERSION##v}.${TARGETOS:-linux}-${TARGETARCH:-amd64}" && \
     chmod 755 /usr/lib/docker/cli-plugins/docker-buildx && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* && \
