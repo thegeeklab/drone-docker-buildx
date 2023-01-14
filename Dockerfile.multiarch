@@ -37,5 +37,4 @@ RUN apk --update add --virtual .build-deps curl && \
     rm -rf /tmp/*
 
 COPY --from=build /src/dist/drone-docker-buildx /bin/drone-docker-buildx
-
 ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "drone-docker-buildx"]
