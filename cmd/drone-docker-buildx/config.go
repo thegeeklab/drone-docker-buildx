@@ -114,6 +114,20 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Category:    category,
 		},
 		&cli.StringFlag{
+			Name:        "daemon.buildkit-driver",
+			EnvVars:     []string{"PLUGIN_BUILDKIT_DRIVER"},
+			Usage:       "set the builder driver to use",
+			Destination: &settings.Daemon.Driver,
+			Category:    category,
+		},
+		&cli.StringFlag{
+			Name:        "daemon.buildkit-driver-opt",
+			EnvVars:     []string{"PLUGIN_BUILDKIT_DRIVER_OPT"},
+			Usage:       "set additional driver-specific options",
+			Destination: &settings.Daemon.DriverOpt,
+			Category:    category,
+		},
+		&cli.StringFlag{
 			Name:        "dockerfile",
 			EnvVars:     []string{"PLUGIN_DOCKERFILE"},
 			Usage:       "dockerfile to use for the image build",

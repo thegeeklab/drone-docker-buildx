@@ -27,6 +27,8 @@ type Daemon struct {
 	IPv6           bool            // Docker daemon IPv6 networking
 	Experimental   bool            // Docker daemon enable experimental mode
 	BuildkitConfig string          // Docker buildkit config
+	Driver         string          // Docker buildkit driver
+	DriverOpt      string          // Docker buildkit driver-opt
 }
 
 // Login defines Docker login parameters.
