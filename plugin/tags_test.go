@@ -40,8 +40,10 @@ func TestDefaultTags(t *testing.T) {
 		tags, err := DefaultTags(test.Before)
 		if err != nil {
 			t.Error(err)
+
 			continue
 		}
+
 		got, want := tags, test.After
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("Got tag %v, want %v", got, want)
@@ -123,8 +125,10 @@ func TestDefaultTagSuffix(t *testing.T) {
 		tag, err := DefaultTagSuffix(test.Before, test.Suffix)
 		if err != nil {
 			t.Error(err)
+
 			continue
 		}
+
 		got, want := tag, test.After
 		if !reflect.DeepEqual(got, want) {
 			t.Errorf("Got tag %v, want %v", got, want)
@@ -136,6 +140,7 @@ func Test_stripHeadPrefix(t *testing.T) {
 	type args struct {
 		ref string
 	}
+
 	tests := []struct {
 		args args
 		want string
@@ -147,6 +152,7 @@ func Test_stripHeadPrefix(t *testing.T) {
 			want: "main",
 		},
 	}
+
 	for _, tt := range tests {
 		if got := stripHeadPrefix(tt.args.ref); got != tt.want {
 			t.Errorf("stripHeadPrefix() = %v, want %v", got, tt.want)
@@ -159,6 +165,7 @@ func TestUseDefaultTag(t *testing.T) {
 		ref           string
 		defaultBranch string
 	}
+
 	tests := []struct {
 		name string
 		args args
@@ -189,6 +196,7 @@ func TestUseDefaultTag(t *testing.T) {
 			want: false,
 		},
 	}
+
 	for _, tt := range tests {
 		if got := UseDefaultTag(tt.args.ref, tt.args.defaultBranch); got != tt.want {
 			t.Errorf("%q. UseDefaultTag() = %v, want %v", tt.name, got, tt.want)

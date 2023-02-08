@@ -3,12 +3,12 @@ package plugin
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/sys/execabs"
 )
 
 // Daemon defines Docker daemon parameters.
@@ -74,6 +74,8 @@ type Settings struct {
 	Dryrun bool
 }
 
+const strictFilePerm = 0o600
+
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
 	p.settings.Build.Branch = p.pipeline.Repo.Branch
@@ -92,11 +94,14 @@ func (p *Plugin) Validate() error {
 			)
 			if err != nil {
 				logrus.Infof("cannot generate tags from %s, invalid semantic version", p.settings.Build.Ref)
+
 				return err
 			}
+
 			p.settings.Build.Tags = *cli.NewStringSlice(tag...)
 		} else {
 			logrus.Infof("skip auto-tagging for %s, not on default branch or tag", p.settings.Build.Ref)
+
 			return nil
 		}
 	}
@@ -115,55 +120,59 @@ func (p *Plugin) Execute() error {
 	// ready to accept connections before we proceed.
 	for i := 0; i < 15; i++ {
 		cmd := commandInfo()
+
 		err := cmd.Run()
 		if err == nil {
 			break
 		}
+
 		time.Sleep(time.Second * 1)
 	}
 
 	// Create Auth Config File
 	if p.settings.Login.Config != "" {
-		if err := os.MkdirAll(dockerHome, 0o600); err != nil {
-			return fmt.Errorf("failed to create docker home: %s", err)
+		if err := os.MkdirAll(dockerHome, strictFilePerm); err != nil {
+			return fmt.Errorf("failed to create docker home: %w", err)
 		}
 
 		path := filepath.Join(dockerHome, "config.json")
-		err := os.WriteFile(path, []byte(p.settings.Login.Config), 0o600)
+
+		err := os.WriteFile(path, []byte(p.settings.Login.Config), strictFilePerm)
 		if err != nil {
-			return fmt.Errorf("error writing config.json: %s", err)
+			return fmt.Errorf("error writing config.json: %w", err)
 		}
 	}
 
 	// login to the Docker registry
 	if p.settings.Login.Password != "" {
 		cmd := commandLogin(p.settings.Login)
+
 		err := cmd.Run()
 		if err != nil {
-			return fmt.Errorf("error authenticating: %s", err)
+			return fmt.Errorf("error authenticating: %w", err)
 		}
 	}
 
 	if p.settings.Daemon.BuildkitConfig != "" {
-		err := os.WriteFile(buildkitConfig, []byte(p.settings.Daemon.BuildkitConfig), 0o600)
+		err := os.WriteFile(buildkitConfig, []byte(p.settings.Daemon.BuildkitConfig), strictFilePerm)
 		if err != nil {
-			return fmt.Errorf("error writing buildkit.toml: %s", err)
+			return fmt.Errorf("error writing buildkit.toml: %w", err)
 		}
 	}
 
 	switch {
 	case p.settings.Login.Password != "":
-		fmt.Println("Detected registry credentials")
+		logrus.Info("Detected registry credentials")
 	case p.settings.Login.Config != "":
-		fmt.Println("Detected registry credentials file")
+		logrus.Info("Detected registry credentials file")
 	default:
-		fmt.Println("Registry credentials or Docker config not provided. Guest mode enabled.")
+		logrus.Info("Registry credentials or Docker config not provided. Guest mode enabled.")
 	}
 
 	// add proxy build args
 	addProxyBuildArgs(&p.settings.Build)
 
-	var cmds []*exec.Cmd
+	var cmds []*execabs.Cmd
 	cmds = append(cmds, commandVersion()) // docker version
 	cmds = append(cmds, commandInfo())    // docker info
 	cmds = append(cmds, commandBuilder(p.settings.Daemon))
