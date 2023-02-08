@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/thegeeklab/drone-plugin-lib/v2 v2.2.1
 	github.com/urfave/cli/v2 v2.24.3
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8
+	golang.org/x/sys v0.5.0
 )
 
 require (
