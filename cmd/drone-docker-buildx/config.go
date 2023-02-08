@@ -7,6 +7,8 @@ import (
 )
 
 // settingsFlags has the cli.Flags for the plugin.Settings.
+//
+//nolint:maintidx
 func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{

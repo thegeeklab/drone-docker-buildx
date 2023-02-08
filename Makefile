@@ -19,7 +19,7 @@ GOLANGCI_LINT_PACKAGE ?= github.com/golangci/golangci-lint/cmd/golangci-lint@$(G
 XGO_PACKAGE ?= src.techknowlogick.com/xgo@latest
 
 GENERATE ?=
-XGO_VERSION := go-1.19.x
+XGO_VERSION := go-1.20.x
 XGO_TARGETS ?= linux/amd64,linux/arm64
 
 TARGETOS ?= linux

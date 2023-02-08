@@ -3,47 +3,56 @@ package plugin
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 	"time"
 
 	"github.com/urfave/cli/v2"
+	"golang.org/x/sys/execabs"
 )
 
 // helper function to create the docker login command.
-func commandLogin(login Login) *exec.Cmd {
+func commandLogin(login Login) *execabs.Cmd {
 	if login.Email != "" {
 		return commandLoginEmail(login)
 	}
-	return exec.Command(
-		dockerExe, "login",
+
+	args := []string{
+		"login",
 		"-u", login.Username,
 		"-p", login.Password,
 		login.Registry,
+	}
+
+	return execabs.Command(
+		dockerBin, args...,
 	)
 }
 
-func commandLoginEmail(login Login) *exec.Cmd {
-	return exec.Command(
-		dockerExe, "login",
+func commandLoginEmail(login Login) *execabs.Cmd {
+	args := []string{
+		"login",
 		"-u", login.Username,
 		"-p", login.Password,
 		"-e", login.Email,
 		login.Registry,
+	}
+
+	return execabs.Command(
+		dockerBin, args...,
 	)
 }
 
 // helper function to create the docker info command.
-func commandVersion() *exec.Cmd {
-	return exec.Command(dockerExe, "version")
+func commandVersion() *execabs.Cmd {
+	return execabs.Command(dockerBin, "version")
 }
 
 // helper function to create the docker info command.
-func commandInfo() *exec.Cmd {
-	return exec.Command(dockerExe, "info")
+func commandInfo() *execabs.Cmd {
+	return execabs.Command(dockerBin, "info")
 }
 
-func commandBuilder(daemon Daemon) *exec.Cmd {
+func commandBuilder(daemon Daemon) *execabs.Cmd {
 	args := []string{
 		"buildx",
 		"create",
@@ -54,15 +63,15 @@ func commandBuilder(daemon Daemon) *exec.Cmd {
 		args = append(args, "--config", buildkitConfig)
 	}
 
-	return exec.Command(dockerExe, args...)
+	return execabs.Command(dockerBin, args...)
 }
 
-func commandBuildx() *exec.Cmd {
-	return exec.Command(dockerExe, "buildx", "ls")
+func commandBuildx() *execabs.Cmd {
+	return execabs.Command(dockerBin, "buildx", "ls")
 }
 
 // helper function to create the docker build command.
-func commandBuild(build Build, dryrun bool) *exec.Cmd {
+func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 	args := []string{
 		"buildx",
 		"build",
@@ -78,39 +87,51 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 	if !dryrun && build.Output == "" && len(build.Tags.Value()) > 0 {
 		args = append(args, "--push")
 	}
+
 	if build.Compress {
 		args = append(args, "--compress")
 	}
+
 	if build.Pull {
 		args = append(args, "--pull=true")
 	}
+
 	if build.NoCache {
 		args = append(args, "--no-cache")
 	}
+
 	for _, arg := range build.CacheFrom {
 		args = append(args, "--cache-from", arg)
 	}
+
 	if build.CacheTo != "" {
 		args = append(args, "--cache-to", build.CacheTo)
 	}
+
 	for _, arg := range build.ArgsEnv.Value() {
 		addProxyValue(&build, arg)
 	}
+
 	for _, arg := range append(defaultBuildArgs, build.Args.Value()...) {
 		args = append(args, "--build-arg", arg)
 	}
+
 	for _, host := range build.AddHost.Value() {
 		args = append(args, "--add-host", host)
 	}
+
 	if build.Target != "" {
 		args = append(args, "--target", build.Target)
 	}
+
 	if build.Quiet {
 		args = append(args, "--quiet")
 	}
+
 	if build.Output != "" {
 		args = append(args, "--output", build.Output)
 	}
+
 	for _, arg := range build.NamedContext.Value() {
 		args = append(args, "--build-context", arg)
 	}
@@ -135,10 +156,10 @@ func commandBuild(build Build, dryrun bool) *exec.Cmd {
 		args = append(args, "--provenance", build.Provenance)
 	}
 
-	return exec.Command(dockerExe, args...)
+	return execabs.Command(dockerBin, args...)
 }
 
-// helper function to add proxy values from the environment
+// helper function to add proxy values from the environment.
 func addProxyBuildArgs(build *Build) {
 	addProxyValue(build, "http_proxy")
 	addProxyValue(build, "https_proxy")
@@ -182,7 +203,7 @@ func hasProxyBuildArg(build *Build, key string) bool {
 }
 
 // helper function to create the docker daemon command.
-func commandDaemon(daemon Daemon) *exec.Cmd {
+func commandDaemon(daemon Daemon) *execabs.Cmd {
 	args := []string{
 		"--data-root", daemon.StoragePath,
 		"--host=unix:///var/run/docker.sock",
@@ -191,35 +212,44 @@ func commandDaemon(daemon Daemon) *exec.Cmd {
 	if daemon.StorageDriver != "" {
 		args = append(args, "-s", daemon.StorageDriver)
 	}
+
 	if daemon.Insecure && daemon.Registry != "" {
 		args = append(args, "--insecure-registry", daemon.Registry)
 	}
+
 	if daemon.IPv6 {
 		args = append(args, "--ipv6")
 	}
+
 	if len(daemon.Mirror) != 0 {
 		args = append(args, "--registry-mirror", daemon.Mirror)
 	}
+
 	if len(daemon.Bip) != 0 {
 		args = append(args, "--bip", daemon.Bip)
 	}
+
 	for _, dns := range daemon.DNS.Value() {
 		args = append(args, "--dns", dns)
 	}
+
 	for _, dnsSearch := range daemon.DNSSearch.Value() {
 		args = append(args, "--dns-search", dnsSearch)
 	}
+
 	if len(daemon.MTU) != 0 {
 		args = append(args, "--mtu", daemon.MTU)
 	}
+
 	if daemon.Experimental {
 		args = append(args, "--experimental")
 	}
-	return exec.Command(dockerdExe, args...)
+
+	return execabs.Command(dockerdBin, args...)
 }
 
 // trace writes each command to stdout with the command wrapped in an xml
 // tag so that it can be extracted and displayed in the logs.
-func trace(cmd *exec.Cmd) {
+func trace(cmd *execabs.Cmd) {
 	fmt.Fprintf(os.Stdout, "+ %s\n", strings.Join(cmd.Args, " "))
 }

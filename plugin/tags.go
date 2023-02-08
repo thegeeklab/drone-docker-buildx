@@ -14,9 +14,11 @@ func DefaultTagSuffix(ref, suffix string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	if len(suffix) == 0 {
 		return tags, nil
 	}
+
 	for i, tag := range tags {
 		if tag == "latest" {
 			tags[i] = suffix
@@ -24,13 +26,15 @@ func DefaultTagSuffix(ref, suffix string) ([]string, error) {
 			tags[i] = fmt.Sprintf("%s-%s", tag, suffix)
 		}
 	}
+
 	return tags, nil
 }
 
 func splitOff(input, delim string) string {
-	parts := strings.SplitN(input, delim, 2)
+	const splits = 2
+	parts := strings.SplitN(input, delim, splits)
 
-	if len(parts) == 2 {
+	if len(parts) == splits {
 		return parts[0]
 	}
 
@@ -43,42 +47,65 @@ func DefaultTags(ref string) ([]string, error) {
 	if !strings.HasPrefix(ref, "refs/tags/") {
 		return []string{"latest"}, nil
 	}
-	v := stripTagPrefix(ref)
-	version, err := semver.NewVersion(v)
+
+	rawVersion := stripTagPrefix(ref)
+
+	version, err := semver.NewVersion(rawVersion)
 	if err != nil {
 		return []string{"latest"}, err
 	}
+
 	if version.PreRelease != "" || version.Metadata != "" {
 		return []string{
 			version.String(),
 		}, nil
 	}
 
-	v = stripTagPrefix(ref)
-	v = splitOff(splitOff(v, "+"), "-")
-	dotParts := strings.SplitN(v, ".", 3)
+	rawVersion = stripTagPrefix(ref)
+	rawVersion = splitOff(splitOff(rawVersion, "+"), "-")
+	//nolint:gomnd
+	dotParts := strings.SplitN(rawVersion, ".", 3)
 
 	if version.Major == 0 {
 		return []string{
 			fmt.Sprintf("%0*d.%0*d", len(dotParts[0]), version.Major, len(dotParts[1]), version.Minor),
-			fmt.Sprintf("%0*d.%0*d.%0*d", len(dotParts[0]), version.Major, len(dotParts[1]), version.Minor, len(dotParts[2]), version.Patch),
+			fmt.Sprintf(
+				"%0*d.%0*d.%0*d",
+				len(dotParts[0]),
+				version.Major,
+				len(dotParts[1]),
+				version.Minor,
+				len(dotParts[2]),
+				version.Patch,
+			),
 		}, nil
 	}
+
 	return []string{
 		fmt.Sprintf("%0*d", len(dotParts[0]), version.Major),
 		fmt.Sprintf("%0*d.%0*d", len(dotParts[0]), version.Major, len(dotParts[1]), version.Minor),
-		fmt.Sprintf("%0*d.%0*d.%0*d", len(dotParts[0]), version.Major, len(dotParts[1]), version.Minor, len(dotParts[2]), version.Patch),
+		fmt.Sprintf(
+			"%0*d.%0*d.%0*d",
+			len(dotParts[0]),
+			version.Major,
+			len(dotParts[1]),
+			version.Minor,
+			len(dotParts[2]),
+			version.Patch,
+		),
 	}, nil
 }
 
-// UseDefaultTag for keep only default branch for latest tag
+// UseDefaultTag to keep only default branch for latest tag.
 func UseDefaultTag(ref, defaultBranch string) bool {
 	if strings.HasPrefix(ref, "refs/tags/") {
 		return true
 	}
+
 	if stripHeadPrefix(ref) == defaultBranch {
 		return true
 	}
+
 	return false
 }
 
@@ -89,5 +116,6 @@ func stripHeadPrefix(ref string) string {
 func stripTagPrefix(ref string) string {
 	ref = strings.TrimPrefix(ref, "refs/tags/")
 	ref = strings.TrimPrefix(ref, "v")
+
 	return ref
 }

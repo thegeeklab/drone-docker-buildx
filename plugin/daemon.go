@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	dockerExe      = "/usr/local/bin/docker"
-	dockerdExe     = "/usr/local/bin/dockerd"
+	dockerBin      = "/usr/local/bin/docker"
+	dockerdBin     = "/usr/local/bin/dockerd"
 	dockerHome     = "/root/.docker/"
 	buildkitConfig = "/tmp/buildkit.toml"
 )
@@ -21,6 +21,7 @@ func (p Plugin) startDaemon() {
 		cmd.Stdout = io.Discard
 		cmd.Stderr = io.Discard
 	}
+
 	go func() {
 		trace(cmd)
 		_ = cmd.Run()

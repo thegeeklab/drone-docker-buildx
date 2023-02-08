@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -13,10 +14,13 @@ import (
 	"github.com/thegeeklab/drone-plugin-lib/v2/urfave"
 )
 
+//nolint:gochecknoglobals
 var (
 	BuildVersion = "devel"
 	BuildDate    = "00000000"
 )
+
+var ErrTypeAssertionFailed = errors.New("type assertion failed")
 
 func main() {
 	settings := &plugin.Settings{}
@@ -46,7 +50,12 @@ func run(settings *plugin.Settings) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		urfave.LoggingFromContext(ctx)
 
-		settings.Build.CacheFrom = ctx.Generic("cache-from").(*drone.StringSliceFlag).Get()
+		cacheFrom, ok := ctx.Generic("cache-from").(*drone.StringSliceFlag)
+		if !ok {
+			return fmt.Errorf("%w: failed to read cache-from input", ErrTypeAssertionFailed)
+		}
+
+		settings.Build.CacheFrom = cacheFrom.Get()
 
 		plugin := plugin.New(
 			*settings,
