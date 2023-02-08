@@ -77,7 +77,7 @@ properties:
 
       ```TOML
       - name: Build
-        image: thegeeklab/drone-docker-buildx:20
+        image: thegeeklab/drone-docker-buildx:23
         settings:
           repo: example/repo
           buildkit_config: |
@@ -165,7 +165,7 @@ properties:
 
       ```Yaml
       - name: Build
-        image: thegeeklab/drone-docker-buildx:20
+        image: thegeeklab/drone-docker-buildx:23
         settings:
           repo: example/repo
           cache_from:
