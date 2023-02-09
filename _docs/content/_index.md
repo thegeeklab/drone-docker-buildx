@@ -33,7 +33,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/drone-docker-buildx
+    image: thegeeklab/drone-docker-buildx:23
     privileged: true
     settings:
       username: octocat
@@ -62,7 +62,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/drone-docker-buildx
+    image: thegeeklab/drone-docker-buildx:23
     privileged: true
     settings:
       registry: ghcr.io
