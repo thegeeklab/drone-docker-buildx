@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.20@sha256:6e835db45c7d88e12b057c0638814c2b266f69143437e4110b8bec5cfc7fa53b as build
+FROM --platform=$BUILDPLATFORM golang:1.20@sha256:53b7958a2fb14e80163fac58a29bf5bf56b3f9bf85ffb981619c1f2da57e896c as build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -8,7 +8,7 @@ WORKDIR /src
 
 RUN make build
 
-FROM docker:23.0-dind@sha256:210f22afb3022a5fb994eeacd18d983c9760efd6f793ee2bf3a3467aef0c583a
+FROM docker:23.0-dind@sha256:a199abed3e7fd6995981c1b54b71115e8396ed91b8babf6936d07067c5e2d6a4
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
 LABEL org.opencontainers.image.authors="Robert Kaussow <mail@thegeeklab.de>"
