@@ -56,7 +56,7 @@ steps:
 
 If the created image is to be pushed to registries other than the default DockerHub, it is necessary to set `registry` and `repo` as fully-qualified name.
 
-**GCHR**
+**GHCR**
 
 ```YAML
 kind: pipeline
