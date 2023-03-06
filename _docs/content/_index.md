@@ -56,6 +56,8 @@ steps:
 
 If the created image is to be pushed to registries other than the default DockerHub, it is necessary to set `registry` and `repo` as fully-qualified name.
 
+**GCHR**
+
 ```YAML
 kind: pipeline
 name: default
@@ -69,6 +71,27 @@ steps:
       username: octocat
       password: secret-access-token
       repo: ghcr.io/octocat/example
+      tags: latest
+```
+
+**AWS ECR**
+
+```YAML
+kind: pipeline
+name: default
+
+steps:
+  - name: docker
+    image: thegeeklab/drone-docker-buildx:23
+    privileged: true
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: aws_secret_access_key
+    settings:
+      registry: <your account ID>.dkr.ecr.<region>.amazonaws.com
+      repo: <your account ID>.dkr.ecr.<region>.amazonaws.com/octocat/example
       tags: latest
 ```
 
