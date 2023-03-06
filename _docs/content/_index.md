@@ -91,7 +91,7 @@ steps:
         from_secret: aws_secret_access_key
     settings:
       registry: <account_id>.dkr.ecr.<region>.amazonaws.com
-      repo: <your account ID>.dkr.ecr.<region>.amazonaws.com/octocat/example
+      repo: <account_id>.dkr.ecr.<region>.amazonaws.com/octocat/example
       tags: latest
 ```
 
