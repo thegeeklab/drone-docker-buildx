@@ -16,3 +16,5 @@ drone-docker-buildx
 multiarch
 buildx
 DockerHub
+ECR
+GHCR
