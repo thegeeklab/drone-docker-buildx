@@ -314,5 +314,12 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Provenance,
 			Category:    category,
 		},
+		&cli.StringFlag{
+			Name:        "sbom",
+			EnvVars:     []string{"PLUGIN_SBOM"},
+			Usage:       "generates sbom attestation for the build",
+			Destination: &settings.Build.SBOM,
+			Category:    category,
+		},
 	}
 }

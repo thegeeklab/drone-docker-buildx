@@ -64,6 +64,7 @@ type Build struct {
 	NamedContext cli.StringSlice // Docker build named context
 	Labels       cli.StringSlice // Docker build labels
 	Provenance   string          // Docker build provenance attestation
+	SBOM         string          // Docker build sbom attestation
 }
 
 // Settings for the Plugin.
