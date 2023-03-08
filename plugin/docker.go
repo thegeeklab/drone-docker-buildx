@@ -156,6 +156,10 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--provenance", build.Provenance)
 	}
 
+	if build.SBOM != "" {
+		args = append(args, "--sbom", build.SBOM)
+	}
+
 	return execabs.Command(dockerBin, args...)
 }
 

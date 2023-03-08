@@ -260,3 +260,8 @@ properties:
     description: Generate [provenance](https://docs.docker.com/build/attestations/slsa-provenance/) attestation for the build (shorthand for `--attest=type=provenance`).
     type: string
     required: false
+
+  - name: sbom
+    description: Generate [sbom](https://docs.docker.com/build/attestations/sbom/) attestation for the build (shorthand for `--attest type=sbom`).
+    type: string
+    required: false
