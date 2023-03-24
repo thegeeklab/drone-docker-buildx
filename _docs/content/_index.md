@@ -52,11 +52,11 @@ steps:
 
 ### Examples
 
-**Push to other registries than DockerHub:**
+#### Push to other registries than DockerHub
 
 If the created image is to be pushed to registries other than the default DockerHub, it is necessary to set `registry` and `repo` as fully-qualified name.
 
-**GHCR**
+**GHCR:**
 
 ```YAML
 kind: pipeline
@@ -74,7 +74,7 @@ steps:
       tags: latest
 ```
 
-**AWS ECR**
+**AWS ECR:**
 
 ```YAML
 kind: pipeline
