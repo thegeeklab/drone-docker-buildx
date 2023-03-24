@@ -111,9 +111,29 @@ func (p *Plugin) Validate() error {
 }
 
 // Execute provides the implementation of the plugin.
+//
+//nolint:gocognit
 func (p *Plugin) Execute() error {
 	// start the Docker daemon server
+	//nolint: nestif
 	if !p.settings.Daemon.Disabled {
+		// If no custom DNS value set start internal DNS server
+		if len(p.settings.Daemon.DNS.Value()) == 0 {
+			ip, err := getContainerIP()
+			if err != nil {
+				logrus.Warnf("error detecting IP address: %v", err)
+			}
+
+			if ip != "" {
+				logrus.Debugf("discovered IP address: %v", ip)
+				p.startCoredns()
+
+				if err := p.settings.Daemon.DNS.Set(ip); err != nil {
+					return fmt.Errorf("error setting daemon dns: %w", err)
+				}
+			}
+		}
+
 		p.startDaemon()
 	}
 
