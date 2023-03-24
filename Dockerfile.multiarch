@@ -27,7 +27,7 @@ ENV BUILDX_VERSION="${BUILDX_VERSION:-v0.10.4}"
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 
 RUN apk --update add --virtual .build-deps curl && \
-    apk --update add --no-cache git && \
+    apk --update add --no-cache git coredns && \
     mkdir -p /usr/lib/docker/cli-plugins/ && \
     curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION##v}/buildx-v${BUILDX_VERSION##v}.${TARGETOS:-linux}-${TARGETARCH:-amd64}" && \
@@ -36,5 +36,6 @@ RUN apk --update add --virtual .build-deps curl && \
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/*
 
+COPY --from=build /src/Corefile /etc/coredns/Corefile
 COPY --from=build /src/dist/drone-docker-buildx /bin/drone-docker-buildx
 ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "drone-docker-buildx"]
