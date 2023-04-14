@@ -16,8 +16,8 @@ github.com/sirupsen/logrus v1.9.0/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVs
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/thegeeklab/drone-plugin-lib/v2 v2.3.1 h1:+tbq9I0XwfK38SOWV3rATPdVt4W/KBXDg1ebmFOjCjw=
-github.com/thegeeklab/drone-plugin-lib/v2 v2.3.1/go.mod h1:NDOZW0eQz7cXeaWeqVS5lzxrUgxrN/TD2KBjS4fMJLk=
+github.com/thegeeklab/drone-plugin-lib/v2 v2.3.2 h1:hyemJcsJ5s5y8i852QVXcOieG9baYtR50DbAhj1yJPw=
+github.com/thegeeklab/drone-plugin-lib/v2 v2.3.2/go.mod h1:CMfyAZlT7pmzxHiDiHxFXWyB7Bgx0yDaebyIyGwMd8o=
 github.com/urfave/cli/v2 v2.25.1 h1:zw8dSP7ghX0Gmm8vugrs6q9Ku0wzweqPyshy+syu9Gw=
 github.com/urfave/cli/v2 v2.25.1/go.mod h1:GHupkWPMM0M/sj1a2b4wUrWBPzazNrIjouW6fmdJLxc=
 github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 h1:bAn7/zixMGCfxrRTfdpNzjtPYqr8smhKouy9mxVdGPU=
