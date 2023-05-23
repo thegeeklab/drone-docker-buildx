@@ -22,7 +22,7 @@ ARG TARGETARCH
 ARG BUILDX_VERSION
 
 # renovate: datasource=github-releases depName=docker/buildx
-ENV BUILDX_VERSION="${BUILDX_VERSION:-v0.10.4}"
+ENV BUILDX_VERSION="${BUILDX_VERSION:-v0.10.5}"
 
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 
