@@ -6,7 +6,7 @@ require (
 	github.com/coreos/go-semver v0.3.1
 	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.2
-	github.com/thegeeklab/drone-plugin-lib/v2 v2.3.2
+	github.com/thegeeklab/drone-plugin-lib/v2 v2.3.3
 	github.com/urfave/cli/v2 v2.25.4
 	golang.org/x/sys v0.8.0
 )
