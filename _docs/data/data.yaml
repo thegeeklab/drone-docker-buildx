@@ -138,7 +138,7 @@ properties:
     required: false
 
   - name: build_args
-    description: Ccustom build arguments to pass to the build.
+    description: Custom build arguments to pass to the build.
     type: list
     required: false
 
