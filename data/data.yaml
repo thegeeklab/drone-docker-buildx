@@ -265,3 +265,8 @@ properties:
     description: Generate [sbom](https://docs.docker.com/build/attestations/sbom/) attestation for the build (shorthand for `--attest type=sbom`).
     type: string
     required: false
+
+  - name: secrets
+    description: Pass [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) when building.
+    type: list
+    required: false
