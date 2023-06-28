@@ -176,11 +176,6 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		}
 	}
 
-	// we need to enable BuildKit, for secret support
-	if build.Secret != "" || len(build.SecretEnvs.Value()) > 0 || len(build.SecretFiles.Value()) > 0 {
-		os.Setenv("DOCKER_BUILDKIT", "1")
-	}
-
 	return execabs.Command(dockerBin, args...)
 }
 
