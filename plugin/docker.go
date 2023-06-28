@@ -11,6 +11,8 @@ import (
 	"golang.org/x/sys/execabs"
 )
 
+var errInvalidSecret = errors.New("invalid secret")
+
 // helper function to create the docker login command.
 func commandLogin(login Login) *execabs.Cmd {
 	if login.Email != "" {
@@ -194,14 +196,14 @@ func getSecretFileCmdArg(kvp string) (string, error) {
 func getSecretCmdArg(kvp string, file bool) (string, error) {
 	delimIndex := strings.IndexByte(kvp, '=')
 	if delimIndex == -1 {
-		return "", errors.New("invalid secret")
+		return "", errInvalidSecret
 	}
 
 	key := kvp[:delimIndex]
 	value := kvp[delimIndex+1:]
 
 	if key == "" || value == "" {
-		return "", errors.New("invalid secret")
+		return "", errInvalidSecret
 	}
 
 	if file {
