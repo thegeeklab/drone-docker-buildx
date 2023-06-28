@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -193,14 +194,14 @@ func getSecretFileCmdArg(kvp string) (string, error) {
 func getSecretCmdArg(kvp string, file bool) (string, error) {
 	delimIndex := strings.IndexByte(kvp, '=')
 	if delimIndex == -1 {
-		return "", fmt.Errorf("%s is not a valid secret", kvp)
+		return "", errors.New("invalid secret")
 	}
 
 	key := kvp[:delimIndex]
 	value := kvp[delimIndex+1:]
 
 	if key == "" || value == "" {
-		return "", fmt.Errorf("%s is not a valid secret", kvp)
+		return "", errors.New("invalid secret")
 	}
 
 	if file {
