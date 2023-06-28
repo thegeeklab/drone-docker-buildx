@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -10,8 +9,6 @@ import (
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
 )
-
-var errInvalidSecret = errors.New("invalid secret")
 
 // helper function to create the docker login command.
 func commandLogin(login Login) *execabs.Cmd {
