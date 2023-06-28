@@ -65,6 +65,9 @@ type Build struct {
 	Labels       cli.StringSlice // Docker build labels
 	Provenance   string          // Docker build provenance attestation
 	SBOM         string          // Docker build sbom attestation
+	Secret       string          // Docker build secret keypair
+	SecretEnvs   cli.StringSlice // Docker build secrets with env var as source
+	SecretFiles  cli.StringSlice // Docker build secrets with file as source
 }
 
 // Settings for the Plugin.

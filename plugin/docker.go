@@ -160,7 +160,59 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--sbom", build.SBOM)
 	}
 
+	if build.Secret != "" {
+		args = append(args, "--secret", build.Secret)
+	}
+
+	for _, secret := range build.SecretEnvs.Value() {
+		if arg, err := getSecretStringCmdArg(secret); err == nil {
+			args = append(args, "--secret", arg)
+		}
+	}
+
+	for _, secret := range build.SecretFiles.Value() {
+		if arg, err := getSecretFileCmdArg(secret); err == nil {
+			args = append(args, "--secret", arg)
+		}
+	}
+
+	// we need to enable BuildKit, for secret support
+	if build.Secret != "" || len(build.SecretEnvs.Value()) > 0 || len(build.SecretFiles.Value()) > 0 {
+		os.Setenv("DOCKER_BUILDKIT", "1")
+	}
+
 	return execabs.Command(dockerBin, args...)
+}
+
+// helper function to parse string secret key-pair
+func getSecretStringCmdArg(kvp string) (string, error) {
+	return getSecretCmdArg(kvp, false)
+}
+
+// helper function to parse file secret key-pair
+func getSecretFileCmdArg(kvp string) (string, error) {
+	return getSecretCmdArg(kvp, true)
+}
+
+// helper function to parse secret key-pair
+func getSecretCmdArg(kvp string, file bool) (string, error) {
+	delimIndex := strings.IndexByte(kvp, '=')
+	if delimIndex == -1 {
+		return "", fmt.Errorf("%s is not a valid secret", kvp)
+	}
+
+	key := kvp[:delimIndex]
+	value := kvp[delimIndex+1:]
+
+	if key == "" || value == "" {
+		return "", fmt.Errorf("%s is not a valid secret", kvp)
+	}
+
+	if file {
+		return fmt.Sprintf("id=%s,src=%s", key, value), nil
+	}
+
+	return fmt.Sprintf("id=%s,env=%s", key, value), nil
 }
 
 // helper function to add proxy values from the environment.
