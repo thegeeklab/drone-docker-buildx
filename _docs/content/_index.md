@@ -95,6 +95,29 @@ steps:
       tags: latest
 ```
 
+#### Expose secrets to the build
+
+The [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) can be used by the build using `RUN --mount=type=secret` mount.
+
+```Yaml
+kind: pipeline
+name: default
+
+steps:
+  - name: docker
+    image: thegeeklab/drone-docker-buildx:23
+    privileged: true
+    environment:
+      SECURE_TOKEN:
+        from_secret: secure_token
+    settings:
+      secrets:
+        - "id=raw_file_secret,src=file.txt"
+        - "id=SECRET_TOKEN"
+```
+
+To use secrets from files a [host volume](https://docs.drone.io/pipeline/docker/syntax/volumes/host/) is required. This should be used with caution and avoided whenever possible.
+
 ## Build
 
 Build the binary with the following command:

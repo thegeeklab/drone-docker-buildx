@@ -267,6 +267,6 @@ properties:
     required: false
 
   - name: secrets
-    description: Pass [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) when building.
+    description: Exposes [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) to the build.
     type: list
     required: false
