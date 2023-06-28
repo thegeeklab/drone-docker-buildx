@@ -179,17 +179,17 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 	return execabs.Command(dockerBin, args...)
 }
 
-// helper function to parse string secret key-pair
+// helper function to parse string secret key-pair.
 func getSecretStringCmdArg(kvp string) (string, error) {
 	return getSecretCmdArg(kvp, false)
 }
 
-// helper function to parse file secret key-pair
+// helper function to parse file secret key-pair.
 func getSecretFileCmdArg(kvp string) (string, error) {
 	return getSecretCmdArg(kvp, true)
 }
 
-// helper function to parse secret key-pair
+// helper function to parse secret key-pair.
 func getSecretCmdArg(kvp string, file bool) (string, error) {
 	delimIndex := strings.IndexByte(kvp, '=')
 	if delimIndex == -1 {
