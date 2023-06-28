@@ -321,5 +321,12 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.SBOM,
 			Category:    category,
 		},
+		&cli.StringSliceFlag{
+			Name:        "secrets",
+			EnvVars:     []string{"PLUGIN_SECRETS"},
+			Usage:       "secret key-value pairs",
+			Destination: &settings.Build.Secrets,
+			Category:    category,
+		},
 	}
 }

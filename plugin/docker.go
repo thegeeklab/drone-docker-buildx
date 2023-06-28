@@ -160,6 +160,10 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--sbom", build.SBOM)
 	}
 
+	for _, secret := range build.Secrets.Value() {
+		args = append(args, "--secret", secret)
+	}
+
 	return execabs.Command(dockerBin, args...)
 }
 
