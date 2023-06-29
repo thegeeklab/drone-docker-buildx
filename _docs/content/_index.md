@@ -112,7 +112,8 @@ steps:
         from_secret: secure_token
     settings:
       secrets:
-        - "id=raw_file_secret,src=file.txt"
+        - "id=raw_file_secret\\\\,src=file.txt"
+        - 'id=other_raw_file_secret\\,src=other_file.txt'
         - "id=SECRET_TOKEN"
 ```
 
