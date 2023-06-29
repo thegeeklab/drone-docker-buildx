@@ -57,6 +57,13 @@ func run(settings *plugin.Settings) cli.ActionFunc {
 
 		settings.Build.CacheFrom = cacheFrom.Get()
 
+		secrets, ok := ctx.Generic("secrets").(*drone.StringSliceFlag)
+		if !ok {
+			return fmt.Errorf("%w: failed to read secrets input", ErrTypeAssertionFailed)
+		}
+
+		settings.Build.Secrets = secrets.Get()
+
 		plugin := plugin.New(
 			*settings,
 			urfave.PipelineFromContext(ctx),

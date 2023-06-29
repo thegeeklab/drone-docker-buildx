@@ -160,7 +160,7 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--sbom", build.SBOM)
 	}
 
-	for _, secret := range build.Secrets.Value() {
+	for _, secret := range build.Secrets {
 		args = append(args, "--secret", secret)
 	}
 
