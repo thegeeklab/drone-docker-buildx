@@ -270,8 +270,8 @@ properties:
 
   - name: secrets
     description: |
-      The [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) can be used by the build
-      using `RUN --mount=type=secret` mount.
+      Exposes [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) to the build.
+      The secrets can be used by the build using `RUN --mount=type=secret` mount.
 
       ```yaml
       steps:
