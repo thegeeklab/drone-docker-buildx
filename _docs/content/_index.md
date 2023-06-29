@@ -27,7 +27,7 @@ The tags follow the major version of Docker, e.g. `20`, and the minor and patch 
 Be aware that the this plugin requires [privileged](https://docs.drone.io/pipeline/docker/syntax/steps/#privileged-mode) capabilities, otherwise the integrated Docker daemon is not able to start.
 {{< /hint >}}
 
-```YAML
+```yaml
 kind: pipeline
 name: default
 
@@ -58,7 +58,7 @@ If the created image is to be pushed to registries other than the default Docker
 
 **GHCR:**
 
-```YAML
+```yaml
 kind: pipeline
 name: default
 
@@ -76,7 +76,7 @@ steps:
 
 **AWS ECR:**
 
-```YAML
+```yaml
 kind: pipeline
 name: default
 
@@ -95,35 +95,11 @@ steps:
       tags: latest
 ```
 
-#### Expose secrets to the build
-
-The [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) can be used by the build using `RUN --mount=type=secret` mount.
-
-```Yaml
-kind: pipeline
-name: default
-
-steps:
-  - name: docker
-    image: thegeeklab/drone-docker-buildx:23
-    privileged: true
-    environment:
-      SECURE_TOKEN:
-        from_secret: secure_token
-    settings:
-      secrets:
-        - "id=raw_file_secret\\\\,src=file.txt"
-        - 'id=other_raw_file_secret\\,src=other_file.txt'
-        - "id=SECRET_TOKEN"
-```
-
-To use secrets from files a [host volume](https://docs.drone.io/pipeline/docker/syntax/volumes/host/) is required. This should be used with caution and avoided whenever possible.
-
 ## Build
 
 Build the binary with the following command:
 
-```Shell
+```shell
 export GOOS=linux
 export GOARCH=amd64
 export CGO_ENABLED=0
@@ -134,13 +110,13 @@ make build
 
 Build the Docker image with the following command:
 
-```Shell
+```shell
 docker build --file docker/Dockerfile.amd64 --tag thegeeklab/drone-docker-buildx .
 ```
 
 ## Test
 
-```Shell
+```shell
 docker run --rm \
   -e PLUGIN_TAG=latest \
   -e PLUGIN_REPO=octocat/hello-world \
