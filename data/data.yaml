@@ -75,15 +75,16 @@ properties:
     description: |
       Content of the docker buildkit toml [config](https://github.com/moby/buildkit/blob/master/docs/buildkitd.toml.md). Example:
 
-      ```TOML
-      - name: Build
-        image: thegeeklab/drone-docker-buildx:23
-        settings:
-          repo: example/repo
-          buildkit_config: |
-          [registry."registry.local:30081"]
-            http = true
-            insecure = true
+      ```yaml
+      steps:
+        - name: Build
+          image: thegeeklab/drone-docker-buildx:23
+          settings:
+            repo: example/repo
+            buildkit_config: |
+            [registry."registry.local:30081"]
+              http = true
+              insecure = true
       ```
     type: string
     defaultValue: false
@@ -163,15 +164,16 @@ properties:
       Images to consider as [cache sources](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from). To properly work,
       commas used in the cache source entries need to be escaped:
 
-      ```Yaml
-      - name: Build
-        image: thegeeklab/drone-docker-buildx:23
-        settings:
-          repo: example/repo
-          cache_from:
-            # using quotes double-escaping is required
-            - "type=registry\\\\,ref=example"
-            - 'type=foo\\,ref=bar'
+      ```yaml
+      steps:
+        - name: Build
+          image: thegeeklab/drone-docker-buildx:23
+          settings:
+            repo: example/repo
+            cache_from:
+              # while using quotes, double-escaping is required
+              - "type=registry\\\\,ref=example"
+              - 'type=foo\\,ref=bar'
       ```
     type: list
     required: false
@@ -267,6 +269,27 @@ properties:
     required: false
 
   - name: secrets
-    description: Exposes [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) to the build.
+    description: |
+      Exposes [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) to the build.
+      The secrets can be used by the build using `RUN --mount=type=secret` mount.
+
+      ```yaml
+      steps:
+        - name: Build
+          image: thegeeklab/drone-docker-buildx:23
+          privileged: true
+          environment:
+            SECURE_TOKEN:
+              from_secret: secure_token
+          settings:
+            secrets:
+              # while using quotes, double-escaping is required
+              - "id=raw_file_secret\\\\,src=file.txt"
+              - 'id=other_raw_file_secret\\,src=other_file.txt'
+              - "id=SECRET_TOKEN"
+      ```
+
+      To use secrets from files a [host volume](https://docs.drone.io/pipeline/docker/syntax/volumes/host/) is required.
+      This should be used with caution and avoided whenever possible.
     type: list
     required: false
