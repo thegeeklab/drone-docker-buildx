@@ -8,7 +8,7 @@ WORKDIR /src
 
 RUN make build
 
-FROM docker:24.0-dind@sha256:594b3a4dc012e5160fed2a5c47a36ac5af6fa25f0c155bd9cff23d4f8c6fec16
+FROM docker:24.0-dind@sha256:ec0c2cf754e65f0a97af7e9fa17294eac0240df9082c5a234da81503858427e2
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
 LABEL org.opencontainers.image.authors="Robert Kaussow <mail@thegeeklab.de>"
