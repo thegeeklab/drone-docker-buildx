@@ -208,7 +208,7 @@ properties:
     description: |
       Repository name for the image. If the image is to be pushed to registries other than the default DockerHub,
       it is necessary to set `repo` as fully-qualified name.
-    type: string
+    type: list
     required: false
 
   - name: registry
@@ -293,3 +293,36 @@ properties:
       This should be used with caution and avoided whenever possible.
     type: list
     required: false
+
+  - name: registries
+    description: |
+      Credentials for registries. Ignored if password was set.
+      Example:
+
+      ```yaml
+      kind: pipeline
+      name: default
+
+      steps:
+        - name: docker
+          image: thegeeklab/drone-docker-buildx:23
+          privileged: true
+          environment:
+            DOCKER_REGISTRY_PASSWORD:
+              from_secret: docker_registry_password
+            GITHUB_REGISTRY_PASSWORD:
+              from_secret: github_registry_password
+          settings:
+            repo: 
+              - octocat/example
+              - ghcr.io/octocat/example
+            tags: latest
+            registries: |
+            registries:                                                                                                                                              
+              - username: "octocat"
+                password: "$DOCKER_REGISTRY_PASSWORD"
+              - registry: "ghcr.io"
+                username: "octocat"
+                password: "$GITHUB_REGISTRY_PASSWORD"
+```
+

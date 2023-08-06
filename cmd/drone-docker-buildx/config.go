@@ -235,7 +235,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Compress,
 			Category:    category,
 		},
-		&cli.StringFlag{
+		&cli.StringSliceFlag{
 			Name:        "repo",
 			EnvVars:     []string{"PLUGIN_REPO"},
 			Usage:       "repository name for the image",
@@ -327,6 +327,13 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Usage:    "exposes secrets to the build",
 			Value:    &drone.StringSliceFlag{},
 			Category: category,
+		},
+		&cli.StringFlag{
+			Name:        "docker.registries",
+			EnvVars:     []string{"PLUGIN_REGISTRIES"},
+			Usage:       "credentials for registries",
+			Destination: &settings.Login.RegistriesYaml,
+			Category:    category,
 		},
 	}
 }
