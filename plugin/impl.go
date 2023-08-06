@@ -45,7 +45,7 @@ type RegistryData struct {
 }
 
 type RegistriesYaml struct {
-	Registries []RegistryData
+	Registries []RegistryData `yaml:"registries"`
 }
 
 // Build defines Docker build parameters.
@@ -186,26 +186,24 @@ func (p *Plugin) Execute() error {
 	}
 
 	if p.settings.Login.RegistriesYaml != "" {
-		if p.settings.Login.Password == "" {
-			var t RegistriesYaml
-			err := yaml.Unmarshal([]byte(p.settings.Login.RegistriesYaml), &t)
+		var t RegistriesYaml
+
+		err := yaml.Unmarshal([]byte(p.settings.Login.RegistriesYaml), &t)
+		if err != nil {
+			return fmt.Errorf("error unmarshal registries: %w", err)
+		}
+
+		for _, registryData := range t.Registries {
+			if registryData.Registry == "" {
+				registryData.Registry = "https://index.docker.io/v1/"
+			}
+
+			cmd := commandLogin(registryData)
+
+			err := cmd.Run()
 			if err != nil {
-				return fmt.Errorf("error unmarshal registries: %w", err)
+				return fmt.Errorf("error authenticating: %w", err)
 			}
-
-			for _, registryData := range t.Registries {
-				if registryData.Registry == "" {
-					registryData.Registry = "https://index.docker.io/v1/"
-				}
-
-				cmd := commandLogin(registryData)
-				err := cmd.Run()
-				if err != nil {
-					return fmt.Errorf("error authenticating: %w", err)
-				}
-			}
-		} else {
-			logrus.Warn("Cannot use password and registries at same time!")
 		}
 	}
 

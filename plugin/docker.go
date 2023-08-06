@@ -140,7 +140,7 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value(), ","))
 	}
 
-	for _, repo := range build.Repo.Value() {		
+	for _, repo := range build.Repo.Value() {
 		for _, arg := range build.Tags.Value() {
 			args = append(args, "-t", fmt.Sprintf("%s:%s", repo, arg))
 		}

@@ -296,7 +296,7 @@ properties:
 
   - name: registries
     description: |
-      Credentials for registries. Ignored if password was set.
+      Credentials for registries.
       Example:
 
       ```yaml
