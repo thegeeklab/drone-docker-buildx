@@ -218,7 +218,7 @@ func (p *Plugin) Execute() error {
 	case p.settings.Login.Password != "":
 		logrus.Info("Detected registry credentials")
 	case p.settings.Login.RegistriesYaml != "":
-		logrus.Info("Detected multiple registries credentials")
+		logrus.Info("Detected multiple registry credentials")
 	case p.settings.Login.Config != "":
 		logrus.Info("Detected registry credentials file")
 	default:
