@@ -295,34 +295,6 @@ properties:
     required: false
 
   - name: registries
-    description: |
-      Credentials for registries.
-      Example:
-
-      ```yaml
-      kind: pipeline
-      name: default
-
-      steps:
-        - name: docker
-          image: thegeeklab/drone-docker-buildx:23
-          privileged: true
-          environment:
-            DOCKER_REGISTRY_PASSWORD:
-              from_secret: docker_registry_password
-            GITHUB_REGISTRY_PASSWORD:
-              from_secret: github_registry_password
-          settings:
-            repo: 
-              - octocat/example
-              - ghcr.io/octocat/example
-            tags: latest
-            registries: |
-            registries:                                                                                                                                              
-              - username: "octocat"
-                password: "$DOCKER_REGISTRY_PASSWORD"
-              - registry: "ghcr.io"
-                username: "octocat"
-                password: "$GITHUB_REGISTRY_PASSWORD"
-```
-
+    description: Credentials for multiple registries described in YAML format. Check out the Examples for more information.
+    type: string
+    required: false
