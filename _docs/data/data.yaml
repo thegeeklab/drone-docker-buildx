@@ -295,6 +295,6 @@ properties:
     required: false
 
   - name: registries
-    description: List registry credentials. Check out the Examples for more information.
+    description: List of registry credentials. Check out the Examples for more information.
     type: list
     required: false
