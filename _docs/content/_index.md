@@ -104,6 +104,18 @@ name: default
 steps:
   - name: docker
     image: thegeeklab/drone-docker-buildx:23
+    commands:
+      - |
+        export PLUGIN_REGISTRIES=$(cat <<EOF
+        registries:
+          - username: "octocat"
+            password: "$${DOCKER_REGISTRY_PASSWORD}"
+          - registry: "ghcr.io"
+            username: "octocat"
+            password: "$${GITHUB_REGISTRY_PASSWORD}"
+        EOF
+        )        
+      - drone-docker-buildx
     privileged: true
     environment:
       DOCKER_REGISTRY_PASSWORD:
@@ -115,15 +127,26 @@ steps:
         - octocat/example
         - ghcr.io/octocat/example
       tags: latest
-      registries: |
-      registries:                                                                                                                                              
-        - username: "octocat"
-          password: "$DOCKER_REGISTRY_PASSWORD"
-        - registry: "ghcr.io"
-          username: "octocat"
-          password: "$GITHUB_REGISTRY_PASSWORD"
 ```
 
+OR
+
+```yaml
+kind: pipeline
+name: default
+
+steps:
+  - name: docker
+    image: thegeeklab/drone-docker-buildx:23
+    privileged: true
+    settings:
+      repo: 
+        - octocat/example
+        - ghcr.io/octocat/example
+      tags: latest
+      registries:
+        from_secret: registries_data
+```
 
 ## Build
 
