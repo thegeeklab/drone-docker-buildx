@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,7 +10,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
-	"gopkg.in/yaml.v3"
 )
 
 // Daemon defines Docker daemon parameters.
@@ -33,8 +33,9 @@ type Daemon struct {
 // Login defines Docker login parameters.
 type Login struct {
 	RegistryData
-	Config         string // Docker Auth Config
-	RegistriesYaml string // Docker Auth with YAML config
+	Config        string
+	Registries    []RegistryData
+	RegistriesRaw string
 }
 
 type RegistryData struct {
@@ -42,10 +43,6 @@ type RegistryData struct {
 	Username string // Docker registry username
 	Password string // Docker registry password
 	Email    string // Docker registry email
-}
-
-type RegistriesYaml struct {
-	Registries []RegistryData `yaml:"registries"`
 }
 
 // Build defines Docker build parameters.
@@ -86,7 +83,10 @@ type Settings struct {
 	Dryrun bool
 }
 
-const strictFilePerm = 0o600
+const (
+	strictFilePerm  = 0o600
+	DefaultRegistry = "https://index.docker.io/v1/"
+)
 
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
@@ -115,6 +115,16 @@ func (p *Plugin) Validate() error {
 			logrus.Infof("skip auto-tagging for %s, not on default branch or tag", p.settings.Build.Ref)
 
 			return nil
+		}
+	}
+
+	if err := json.Unmarshal([]byte(p.settings.Login.RegistriesRaw), &p.settings.Login.Registries); err != nil {
+		return fmt.Errorf("error unmarshal registries: %w", err)
+	}
+
+	for i, registryData := range p.settings.Login.Registries {
+		if registryData.Registry == "" {
+			p.settings.Login.Registries[i].Registry = DefaultRegistry
 		}
 	}
 
@@ -185,25 +195,12 @@ func (p *Plugin) Execute() error {
 		}
 	}
 
-	if p.settings.Login.RegistriesYaml != "" {
-		var t RegistriesYaml
+	for _, registryData := range p.settings.Login.Registries {
+		cmd := commandLogin(registryData)
 
-		err := yaml.Unmarshal([]byte(p.settings.Login.RegistriesYaml), &t)
+		err := cmd.Run()
 		if err != nil {
-			return fmt.Errorf("error unmarshal registries: %w", err)
-		}
-
-		for _, registryData := range t.Registries {
-			if registryData.Registry == "" {
-				registryData.Registry = "https://index.docker.io/v1/"
-			}
-
-			cmd := commandLogin(registryData)
-
-			err := cmd.Run()
-			if err != nil {
-				return fmt.Errorf("error authenticating: %w", err)
-			}
+			return fmt.Errorf("error authenticating: %w", err)
 		}
 	}
 
@@ -217,7 +214,7 @@ func (p *Plugin) Execute() error {
 	switch {
 	case p.settings.Login.Password != "":
 		logrus.Info("Detected registry credentials")
-	case p.settings.Login.RegistriesYaml != "":
+	case len(p.settings.Login.Registries) > 0:
 		logrus.Info("Detected multiple registry credentials")
 	case p.settings.Login.Config != "":
 		logrus.Info("Detected registry credentials file")
