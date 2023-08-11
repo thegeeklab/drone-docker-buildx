@@ -95,29 +95,6 @@ steps:
       tags: latest
 ```
 
-#### Push to multiple registries
-
-```yaml
-kind: pipeline
-name: default
-
-steps:
-  - name: docker
-    image: thegeeklab/drone-docker-buildx:23
-    privileged: true
-    settings:
-      repo:
-        - octocat/example
-        - ghcr.io/octocat/example
-      tags: latest
-      registries:
-        - username: octocat
-          password: docker-password
-        - registry: ghcr.io
-          username: octocat
-          password: ghrc-password
-```
-
 ## Build
 
 Build the binary with the following command:
