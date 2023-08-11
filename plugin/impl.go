@@ -9,7 +9,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
-	"gopkg.in/yaml.v3"
 )
 
 // Daemon defines Docker daemon parameters.
@@ -32,20 +31,11 @@ type Daemon struct {
 
 // Login defines Docker login parameters.
 type Login struct {
-	RegistryData
-	Config         string // Docker Auth Config
-	RegistriesYaml string // Docker Auth with YAML config
-}
-
-type RegistryData struct {
 	Registry string // Docker registry address
 	Username string // Docker registry username
 	Password string // Docker registry password
 	Email    string // Docker registry email
-}
-
-type RegistriesYaml struct {
-	Registries []RegistryData `yaml:"registries"`
+	Config   string // Docker Auth Config
 }
 
 // Build defines Docker build parameters.
@@ -66,7 +56,7 @@ type Build struct {
 	CacheFrom    []string        // Docker build cache-from
 	CacheTo      string          // Docker build cache-to
 	Compress     bool            // Docker build compress
-	Repo         cli.StringSlice // Docker build repositories
+	Repo         string          // Docker build repository
 	NoCache      bool            // Docker build no-cache
 	AddHost      cli.StringSlice // Docker build add-host
 	Quiet        bool            // Docker build quiet
@@ -177,33 +167,11 @@ func (p *Plugin) Execute() error {
 
 	// login to the Docker registry
 	if p.settings.Login.Password != "" {
-		cmd := commandLogin(p.settings.Login.RegistryData)
+		cmd := commandLogin(p.settings.Login)
 
 		err := cmd.Run()
 		if err != nil {
 			return fmt.Errorf("error authenticating: %w", err)
-		}
-	}
-
-	if p.settings.Login.RegistriesYaml != "" {
-		var t RegistriesYaml
-
-		err := yaml.Unmarshal([]byte(p.settings.Login.RegistriesYaml), &t)
-		if err != nil {
-			return fmt.Errorf("error unmarshal registries: %w", err)
-		}
-
-		for _, registryData := range t.Registries {
-			if registryData.Registry == "" {
-				registryData.Registry = "https://index.docker.io/v1/"
-			}
-
-			cmd := commandLogin(registryData)
-
-			err := cmd.Run()
-			if err != nil {
-				return fmt.Errorf("error authenticating: %w", err)
-			}
 		}
 	}
 
@@ -217,8 +185,6 @@ func (p *Plugin) Execute() error {
 	switch {
 	case p.settings.Login.Password != "":
 		logrus.Info("Detected registry credentials")
-	case p.settings.Login.RegistriesYaml != "":
-		logrus.Info("Detected multiple registry credentials")
 	case p.settings.Login.Config != "":
 		logrus.Info("Detected registry credentials file")
 	default:

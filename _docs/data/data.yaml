@@ -208,7 +208,7 @@ properties:
     description: |
       Repository name for the image. If the image is to be pushed to registries other than the default DockerHub,
       it is necessary to set `repo` as fully-qualified name.
-    type: list
+    type: string
     required: false
 
   - name: registry
@@ -292,9 +292,4 @@ properties:
       To use secrets from files a [host volume](https://docs.drone.io/pipeline/docker/syntax/volumes/host/) is required.
       This should be used with caution and avoided whenever possible.
     type: list
-    required: false
-
-  - name: registries
-    description: Credentials for multiple registries described in YAML format. Check out the Examples for more information.
-    type: string
     required: false
