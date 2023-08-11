@@ -11,7 +11,7 @@ import (
 )
 
 // helper function to create the docker login command.
-func commandLogin(login RegistryData) *execabs.Cmd {
+func commandLogin(login Login) *execabs.Cmd {
 	if login.Email != "" {
 		return commandLoginEmail(login)
 	}
@@ -28,7 +28,7 @@ func commandLogin(login RegistryData) *execabs.Cmd {
 	)
 }
 
-func commandLoginEmail(login RegistryData) *execabs.Cmd {
+func commandLoginEmail(login Login) *execabs.Cmd {
 	args := []string{
 		"login",
 		"-u", login.Username,
@@ -140,10 +140,8 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--platform", strings.Join(build.Platforms.Value(), ","))
 	}
 
-	for _, repo := range build.Repo.Value() {
-		for _, arg := range build.Tags.Value() {
-			args = append(args, "-t", fmt.Sprintf("%s:%s", repo, arg))
-		}
+	for _, arg := range build.Tags.Value() {
+		args = append(args, "-t", fmt.Sprintf("%s:%s", build.Repo, arg))
 	}
 
 	for _, arg := range build.ExtraTags.Value() {

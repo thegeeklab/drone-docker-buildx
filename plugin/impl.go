@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -32,17 +31,11 @@ type Daemon struct {
 
 // Login defines Docker login parameters.
 type Login struct {
-	RegistryData
-	Config        string
-	Registries    []RegistryData
-	RegistriesRaw string
-}
-
-type RegistryData struct {
 	Registry string // Docker registry address
 	Username string // Docker registry username
 	Password string // Docker registry password
 	Email    string // Docker registry email
+	Config   string // Docker Auth Config
 }
 
 // Build defines Docker build parameters.
@@ -63,7 +56,7 @@ type Build struct {
 	CacheFrom    []string        // Docker build cache-from
 	CacheTo      string          // Docker build cache-to
 	Compress     bool            // Docker build compress
-	Repo         cli.StringSlice // Docker build repositories
+	Repo         string          // Docker build repository
 	NoCache      bool            // Docker build no-cache
 	AddHost      cli.StringSlice // Docker build add-host
 	Quiet        bool            // Docker build quiet
@@ -83,10 +76,7 @@ type Settings struct {
 	Dryrun bool
 }
 
-const (
-	strictFilePerm  = 0o600
-	DefaultRegistry = "https://index.docker.io/v1/"
-)
+const strictFilePerm = 0o600
 
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
@@ -115,16 +105,6 @@ func (p *Plugin) Validate() error {
 			logrus.Infof("skip auto-tagging for %s, not on default branch or tag", p.settings.Build.Ref)
 
 			return nil
-		}
-	}
-
-	if err := json.Unmarshal([]byte(p.settings.Login.RegistriesRaw), &p.settings.Login.Registries); err != nil {
-		return fmt.Errorf("error unmarshal registries: %w", err)
-	}
-
-	for i, registryData := range p.settings.Login.Registries {
-		if registryData.Registry == "" {
-			p.settings.Login.Registries[i].Registry = DefaultRegistry
 		}
 	}
 
@@ -187,16 +167,7 @@ func (p *Plugin) Execute() error {
 
 	// login to the Docker registry
 	if p.settings.Login.Password != "" {
-		cmd := commandLogin(p.settings.Login.RegistryData)
-
-		err := cmd.Run()
-		if err != nil {
-			return fmt.Errorf("error authenticating: %w", err)
-		}
-	}
-
-	for _, registryData := range p.settings.Login.Registries {
-		cmd := commandLogin(registryData)
+		cmd := commandLogin(p.settings.Login)
 
 		err := cmd.Run()
 		if err != nil {
@@ -214,8 +185,6 @@ func (p *Plugin) Execute() error {
 	switch {
 	case p.settings.Login.Password != "":
 		logrus.Info("Detected registry credentials")
-	case len(p.settings.Login.Registries) > 0:
-		logrus.Info("Detected multiple registry credentials")
 	case p.settings.Login.Config != "":
 		logrus.Info("Detected registry credentials file")
 	default:
