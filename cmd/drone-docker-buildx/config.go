@@ -246,7 +246,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Name:        "docker.registry",
 			EnvVars:     []string{"PLUGIN_REGISTRY", "DOCKER_REGISTRY"},
 			Usage:       "docker registry to authenticate with",
-			Value:       plugin.DefaultRegistry,
+			Value:       "https://index.docker.io/v1/",
 			Destination: &settings.Login.Registry,
 			Category:    category,
 		},
@@ -332,8 +332,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Name:        "docker.registries",
 			EnvVars:     []string{"PLUGIN_REGISTRIES"},
 			Usage:       "credentials for registries",
-			Value:       "[]",
-			Destination: &settings.Login.RegistriesRaw,
+			Destination: &settings.Login.RegistriesYaml,
 			Category:    category,
 		},
 	}

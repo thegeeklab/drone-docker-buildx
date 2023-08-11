@@ -95,7 +95,7 @@ steps:
       tags: latest
 ```
 
-#### Push to multiple registries
+**Multiple registries:**
 
 ```yaml
 kind: pipeline
@@ -105,18 +105,25 @@ steps:
   - name: docker
     image: thegeeklab/drone-docker-buildx:23
     privileged: true
+    environment:
+      DOCKER_REGISTRY_PASSWORD:
+        from_secret: docker_registry_password
+      GITHUB_REGISTRY_PASSWORD:
+        from_secret: github_registry_password
     settings:
-      repo:
+      repo: 
         - octocat/example
         - ghcr.io/octocat/example
       tags: latest
-      registries:
-        - username: octocat
-          password: docker-password
-        - registry: ghcr.io
-          username: octocat
-          password: ghrc-password
+      registries: |
+      registries:                                                                                                                                              
+        - username: "octocat"
+          password: "$DOCKER_REGISTRY_PASSWORD"
+        - registry: "ghcr.io"
+          username: "octocat"
+          password: "$GITHUB_REGISTRY_PASSWORD"
 ```
+
 
 ## Build
 
